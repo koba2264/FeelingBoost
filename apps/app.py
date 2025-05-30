@@ -1,7 +1,10 @@
 from flask import Flask
 
+from apps.config import config
+
 def create_app():
     app = Flask(__name__)
+
 
     from apps.main import views as main_views
 
