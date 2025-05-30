@@ -1,4 +1,7 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+import google.generativeai as genai
 
 # config.pyの親フォルダ(apps)の親フォルダ(flaskbook)をベースフォルダに設定
 basedir = Path(__file__).parent.parent
@@ -11,6 +14,14 @@ class BaseConfig:
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
     # 画像のアップロード先をapps/imagesに設定する
     UPLOAD_FOLDER = str(Path(basedir, "apps", "images"))
+
+    # .envファイルの読み込み
+    load_dotenv()
+    # APIキー
+    GOOGLE_API_KEY=os.getenv("GeminiAPI")
+    genai.configure(api_key=GOOGLE_API_KEY)
+
+    GEMINI = genai.GenerativeModel("gemini-1.5-flash")
 
 
 # 個別の設定
