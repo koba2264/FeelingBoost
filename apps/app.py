@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+from apps.config import config
+
 def create_app():
     app = Flask(__name__)
     # アプリのコンフィグ設定
@@ -16,6 +18,7 @@ def create_app():
 
     db.init_app(app)
     Migrate(app,db)
+
 
     from apps.main import views as main_views
 
