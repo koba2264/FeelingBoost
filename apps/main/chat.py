@@ -11,13 +11,13 @@ history = [
 
 def main():
 
-    gemini_pro = current_app.config[""]
+    # gemini_pro = current_app.config[""]
 
     history = []
 
     setting = '宇宙人風に返答してくれ'
-    chat = gemini_pro.start_chat(history=history)
-    chat.send_message(setting)
+    # chat = gemini_pro.start_chat(history=history)
+    # chat.send_message(setting)
 
 # 履歴を保存
 def saveHistory(text,chat):
