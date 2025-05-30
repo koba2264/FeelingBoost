@@ -12,6 +12,6 @@ main = Blueprint(
 def index():
     return render_template('main/index.html')
 
-@main.route('/mane')
-def menu():
-    
+# @main.route('/mane')
+# def menu():
+
