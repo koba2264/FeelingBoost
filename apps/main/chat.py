@@ -9,19 +9,25 @@ history = [
     ]
 
 
-def main():
 
-    # gemini_pro = current_app.config[""]
-
-    history = []
+def main(gemini_pro):
+    history = get_history()
 
     setting = '宇宙人風に返答してくれ'
-    # chat = gemini_pro.start_chat(history=history)
-    # chat.send_message(setting)
+    chat = gemini_pro.start_chat(history=history)
+    chat.send_message(setting)
 
 # 履歴を保存
 def saveHistory(text,chat):
     history
+
+# 履歴の取得
+def get_history():
+    return history
+
+# def set_type(num):
+    
+
 
 # チャット機能
 def chat(text,chat):
@@ -29,4 +35,4 @@ def chat(text,chat):
     return response
 
 
-main()
+# main()
