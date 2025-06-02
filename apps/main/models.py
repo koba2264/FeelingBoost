@@ -3,21 +3,30 @@ from datetime import datetime
 from apps.app import db
 from werkzeug.security import generate_password_hash
 
+# chat履歴保存
 class History(db.Model):
   # テーブル名
   __tablename__ = "history"
   # カラム
+  # chatid
   history_id = db.Column(db.String, primary_key=True)
-  user_id = db.Column(db.String, primary_key=True)
+  # ユーザーID
+  user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+  # 発言者
+  # ユーザーの発言:'user' モデルの返答:'model'
   role = db.Column(db.String)
+  # chat内容
   text = db.Column(db.String)
 
+# 現在のタスク
 class Task(db.Model):
   # テーブル名
   __tablename__ = "task"
   # カラム
+  # タスクID
   task_id = db.Column(db.String, primary_key=True)
-  user_id = db.Column(db.String, primary_key=True)
+  # ユーザーID
+  user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
   task1_text = db.Column(db.String)
   task2_text = db.Column(db.String)
   task3_text = db.Column(db.String)
@@ -32,9 +41,9 @@ class TaskHistory(db.Model):
   __tablename__ = "task_history"
   # カラム
   task_history_id = db.Column(db.String, primary_key=True)
-  user_id = db.Column(db.String, primary_key=True)
+  user_id = db.Column(db.String,db.ForeignKey("users.id"), primary_key=True)
   task1 = db.Column(db.String)
   task2 = db.Column(db.String)
   task3 = db.Column(db.String)
-  date = db.Column(db.Datetime, default=datetime.now)
+  date = db.Column(db.DateTime, default=datetime.now)
 
