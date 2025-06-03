@@ -4,12 +4,12 @@ from apps.app import db
 from werkzeug.security import generate_password_hash
 
 # chat履歴保存
-class History(db.Model):
+class ChatHistory(db.Model):
   # テーブル名
-  __tablename__ = "history"
+  __tablename__ = "chat_histories"
   # カラム
   # chatid
-  history_id = db.Column(db.String, primary_key=True)
+  history_id = db.Column(db.Integer, primary_key=True)
   # ユーザーID
   user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
   # 発言者
@@ -38,9 +38,9 @@ class Task(db.Model):
 
 class TaskHistory(db.Model):
   # テーブル名
-  __tablename__ = "task_history"
+  __tablename__ = "task_histories"
   # カラム
-  task_history_id = db.Column(db.String, primary_key=True)
+  task_history_id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.String,db.ForeignKey("users.id"), primary_key=True)
   task1 = db.Column(db.String)
   task2 = db.Column(db.String)

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, current_app
-from apps.main.chat import main as chat
+# from apps.main.models import History
 
 main = Blueprint(
     "main",
@@ -16,4 +16,13 @@ def index():
 def menu():
     gemini_pro = current_app.config["GEMINI"]
     # chat(gemini_pro)
+
+# chatの処理
+def chat(text,chat):
+    # 回答の生成
+    response = chat.send_message(text)
+    # 回答の保存
+    return response
+
+# def saveHistory(text,response):
 
