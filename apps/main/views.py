@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, current_app, request, session
 from apps.main.models import ChatHistory ,Task ,TaskHistory
+from apps.auth.models import User
 from apps.app import db
 # from flask_login import current_user, login_required
 import google.generativeai as genai
 import os
 
-userid = 'test'
+# 仮のユーザーのID
+userid = 123
 
 main = Blueprint(
     "main",
@@ -60,6 +62,12 @@ def chat(text,ai):
 
 # chatの履歴をDBへ保存する関数
 def saveHistory(text,response):
+    # 仮でユーザーを追加
+    # user1 = User(
+    #     id = 123,
+    #     username = 'test',
+    #     password_hash = 'test'
+    # )
     # ユーザーが送信したテキスト
     user = ChatHistory(
         # 後でログイン中のユーザーIDへ変更する
@@ -74,6 +82,9 @@ def saveHistory(text,response):
         role = 'model',
         text = response
     )
+    # 仮でuserを追加
+    # db.session.add(user1)
+    # db.session.commit()
     db.session.add(user)
     db.session.add(model)
     db.session.commit()

@@ -9,9 +9,9 @@ class ChatHistory(db.Model):
   __tablename__ = "chat_histories"
   # カラム
   # chatid
-  history_id = db.Column(db.Integer, primary_key=True)
+  history_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   # ユーザーID
-  user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+  user_id = db.Column(db.String, db.ForeignKey("users.id"))
   # 発言者
   # ユーザーの発言:'user' モデルの返答:'model'
   role = db.Column(db.String)
@@ -42,9 +42,9 @@ class TaskHistory(db.Model):
   # テーブル名
   __tablename__ = "task_histories"
   # ID
-  task_history_id = db.Column(db.Integer, primary_key=True)
+  task_history_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   # ユーザーID
-  user_id = db.Column(db.String,db.ForeignKey("users.id"), primary_key=True)
+  user_id = db.Column(db.String,db.ForeignKey("users.id"))
   # タスクの達成状況
   task1 = db.Column(db.Boolean)
   task2 = db.Column(db.Boolean)
