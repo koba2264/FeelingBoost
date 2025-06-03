@@ -1,4 +1,12 @@
 {% extends "main/base.html" %}
 {% block content %}
     <p>ホーム画面</p>
+    {% for chat in chat_his %}
+        <p class="user">{{ chat['user'] }}</p>
+        <p class="model">{{ chat['model'] }}</p>
+    {% endfor %}
+    <form action="{{ url_for('main.menu') }}" method="post">
+        <input type="text" name="text">
+        <input type="submit" value="投稿">
+    </form>
 {% endblock %}
