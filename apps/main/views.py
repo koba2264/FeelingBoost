@@ -20,15 +20,12 @@ def index():
 
 @main.route('/mane', methods=["GET","POST"])
 def menu():
-    # 設定をconfigから取得
-    # gemini_pro = current_app.config["GEMINI"]
-    GOOGLE_API_KEY=os.getenv("GeminiAPI")
-    genai.configure(api_key=GOOGLE_API_KEY)
 
-    gemini_pro = genai.GenerativeModel("gemini-1.5-flash")
+    # 設定をconfigから取得
+    gemini_pro = current_app.config["GEMINI"]
     # 前回以前の履歴の取得
-    # history = getHistory()
-    history=[]
+    history = getHistory()
+    # history=[]
     # chatbotのスタート
     ai = gemini_pro.start_chat(history=history)
 
@@ -43,12 +40,12 @@ def menu():
         # 投稿の取得
         text = request.form['text']
         # レスポンスの生成
-        # response = chat(text, ai)
-        response = ai.send_message(text)
-        print(response.text)
+        response = chat(text, ai)
+        # response = ai.send_message(text)
+        # print(response.text)
         # chatの履歴へ追加
-        chat_his.append({'user':text,'model':response.text})
-        
+        chat_his.append({'user':text,'model':response})
+     
     # セッションにchatの履歴を保存
     session['chat_his'] = chat_his
     return render_template('main/index.html', chat_his=chat_his)
@@ -56,8 +53,9 @@ def menu():
 # chatの処理
 def chat(text,ai):
     # 回答の生成
-    response = ai.send_message(text)
+    response = ai.send_message(text).text
     # 回答の保存
+    saveHistory(text,response)
     return response
 
 # chatの履歴をDBへ保存する関数
@@ -72,7 +70,7 @@ def saveHistory(text,response):
     # AIが生成した回答
     model = ChatHistory(
         # 後でログイン中のユーザーIDへ変更する
-        userid = userid,
+        user_id = userid,
         role = 'model',
         text = response
     )

@@ -17,11 +17,11 @@ class User(db.Model, UserMixin):
     point = db.Column(db.Integer, default=0)
 
     # 関連する履歴
-    user_historys = db.relationship("History",backref="user",order_by="asc(History.id)")
+    user_chat_historys = db.relationship("ChatHistory",backref="user",order_by="asc(ChatHistory.history_id)")
     # 関連するタスク
-    user_task = db.relationship("Task",backref="user",order_by="asc(Task.id)")
+    user_task = db.relationship("Task",backref="user",order_by="asc(Task.task_id)")
     # 関連するタスクの完了履歴
-    user_task_history = db.relationship("TaskHistory",backref="user",order_by="asc(TaskHistory.id)")
+    user_task_history = db.relationship("TaskHistory",backref="user",order_by="asc(TaskHistory.task_history_id)")
 
     @property
     def password(self):
