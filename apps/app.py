@@ -24,7 +24,7 @@ def create_app():
     app.config.from_object(config[config_key])
 
     # アプリと連携
-    csrf.init_app(app)
+    # csrf.init_app(app)
     # SQLAlchemyとアプリを連携させる
     db.init_app(app)
     # Migrateとアプリを連携する
