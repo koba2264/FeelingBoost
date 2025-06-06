@@ -147,11 +147,12 @@ def serchPrsnlty(id):
     )
     return prsnlty.prompt
 
+# タスクをランダムで3つ生成してリストで返す
 def taskGeneration():
     today = datetime.today().strftime("%Y年%m月%d日")
     prompt = f"あなたはポジティブで人を褒めるのが得意なコーチです。今日は{today}です。毎日達成できる、シンプルで簡単な日常タスクを3つ考えてください。それぞれのタスクは1文で、短く、わかりやすくしてください。難しいことではなく、実行しやすい前向きな内容にしてください。タスクは10個生成して下さい。出力形式は「今日〇〇してみましょう」のようにして一文でタスクどうしは「:」でつなげてください。"
     gemini_pro = current_app.config["GEMINI"].start_chat()
-    # task = gemini_pro.send_message(prompt).text.split(':')
+    # ランダム性を持たせるようにした
     task = gemini_pro.model.generate_content(
         prompt,
         generation_config={
@@ -163,8 +164,10 @@ def taskGeneration():
 
     rannum = random.sample(range(10), 3)
     result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
-    print(rannum)
+
     return result
+
+def getTask():
 
     
 
