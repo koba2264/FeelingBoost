@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, current_app, request, session
-from apps.main.models import ChatHistory ,Task ,TaskHistory
+from apps.main.models import ChatHistory ,Task ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 # from flask_login import current_user, login_required
-import google.generativeai as genai
-import os
 
 # 仮のユーザーのID
 userid = 123
@@ -20,14 +18,48 @@ main = Blueprint(
 def index():
     return render_template('main/index.html')
 
+@main.route('/Prsnlty')
+def insert():
+    # 仮でユーザーを追加
+    user1 = User(
+        id = 123,
+        username = 'test',
+        password_hash = 'test'
+    )
+    prsnlty1 = Prsnlty(
+        prsnlty_id = 1,
+        name = 'ポジティブコーチ',
+        prompt = 'あなたは常に前向きで元気あふれるコーチです。ユーザーのどんな小さな努力でも見逃さず、励まし、積極的に褒め称え、さらに意欲を引き出してください。'
+    )
+    prsnlty2 = Prsnlty(
+        prsnlty_id = 2,
+        name = '優しいお姉さん',
+        prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。'
+    )
+    prsnlty3 = Prsnlty(
+        prsnlty_id = 3,
+        name = '丁寧な執事',
+        prompt = 'あなたは礼儀正しく丁寧な執事の人格です。ユーザーの振る舞いや行動を敬意をもって上品に褒め、ユーザーが特別感を味わえるような表現を使ってください。'
+    )
+    prsnlty4 = Prsnlty(
+        prsnlty_id = 4,
+        name = '熱血応援団長',
+        prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。'
+    )
+    db.session.add(prsnlty1)
+    db.session.add(prsnlty2)
+    db.session.add(prsnlty3)
+    db.session.add(prsnlty4)
+    db.session.add(user1)
+    db.session.commit()
+    return render_template('main/index.html')
+
 @main.route('/mane', methods=["GET","POST"])
 def menu():
-
     # 設定をconfigから取得
     gemini_pro = current_app.config["GEMINI"]
     # 前回以前の履歴の取得
     history = getHistory()
-    # history=[]
     # chatbotのスタート
     ai = gemini_pro.start_chat(history=history)
 
@@ -42,7 +74,7 @@ def menu():
         # 投稿の取得
         text = request.form['text']
         # レスポンスの生成
-        response = chat(text, ai)
+        response = chat(text,ai)
         # response = ai.send_message(text)
         # print(response.text)
         # chatの履歴へ追加
@@ -62,31 +94,13 @@ def chat(text,ai):
 
 # chatの履歴をDBへ保存する関数
 def saveHistory(text,response):
-    # 仮でユーザーを追加
-    # user1 = User(
-    #     id = 123,
-    #     username = 'test',
-    #     password_hash = 'test'
-    # )
-    # ユーザーが送信したテキスト
-    user = ChatHistory(
-        # 後でログイン中のユーザーIDへ変更する
+    # chatの履歴を格納
+    chat_his = ChatHistory(
         user_id = userid,
-        role = 'user',
-        text = text
+        user = text,
+        model = response
     )
-    # AIが生成した回答
-    model = ChatHistory(
-        # 後でログイン中のユーザーIDへ変更する
-        user_id = userid,
-        role = 'model',
-        text = response
-    )
-    # 仮でuserを追加
-    # db.session.add(user1)
-    # db.session.commit()
-    db.session.add(user)
-    db.session.add(model)
+    db.session.add(chat_his)
     db.session.commit()
 
 # DBから現在ログイン中のユーザーのチャット履歴を取得する関数
@@ -99,8 +113,17 @@ def getHistory():
         .all()
     )
     for his in histories:
-        history.append({"role":his.role, "parts":his.text})
+        history += [{"role":"user", "parts":his.user},{"role":"model", "parts":his.model}]
     
     return history
+
+
+def getPrsnlty():
+    prsnlty = []
+    prsnlties = (
+        db.session.query(Prsnlty).all()
+    )
+    for prs in prsnlties:
+        prsnlties = [{}]
 
     
