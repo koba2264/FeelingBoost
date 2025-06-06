@@ -3,7 +3,7 @@ from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 from flask_wtf import FlaskForm
-
+from flask_login import login_required
 from datetime import datetime
 import random
 from flask_login import current_user, login_required
@@ -19,6 +19,7 @@ main = Blueprint(
 )
 
 @main.route('/Prsnlty')
+@login_required
 def insert():
     # 仮でユーザーを追加
     user1 = User(
@@ -55,6 +56,7 @@ def insert():
     return render_template('main/test.html')
 
 @main.route('/', methods=["GET","POST"])
+@login_required
 def menu():
     task_list = taskGeneration()
     form = FlaskForm()
@@ -82,7 +84,6 @@ def menu():
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
         history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
-
         
         # 投稿の取得
         text = request.form['text']

@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
     # テーブル名
     __tablename__ = "users"
     # ユーザーID
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # ユーザー名
     username = db.Column(db.String, index=True)
     # ハッシュ化したパスワード

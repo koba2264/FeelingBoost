@@ -22,7 +22,6 @@ def signup():
     form = SignUpForm()
     if form.validate_on_submit():
         user = User(
-            id=form.id.data,
             username=form.username.data,
             password=form.password.data,
         )
@@ -32,10 +31,10 @@ def signup():
         db.session.commit()
         # ユーザー情報をセッションに格納する
         login_user(user)
-        # GETパラメータにnextキーが存在し、値がない場合はユーザーの一覧ページへリダイレクト
+        # GETパラメータにnextキーが存在し、値がない場合はログインページへリダイレクト
         next_ = request.args.get("next")
         if next_ is None or not next_.startswith("/"):
-            next_ = url_for("main.menu")
+            next_ = url_for("auth.login")
         return redirect(next_)
     return render_template("auth/signup.html", form=form)
 
