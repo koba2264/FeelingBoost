@@ -19,11 +19,10 @@ main = Blueprint(
 )
 
 @main.route('/Prsnlty')
-@login_required
 def insert():
     # 仮でユーザーを追加
     user1 = User(
-        id = 123,
+        id = '123',
         username = 'test',
         password_hash = 'test'
     )
