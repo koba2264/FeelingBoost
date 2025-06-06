@@ -3,6 +3,7 @@ from apps.main.models import ChatHistory ,Task ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 from flask_wtf import FlaskForm
+
 from datetime import datetime
 import random
 # from flask_login import current_user, login_required
@@ -95,6 +96,7 @@ def menu():
     # セッションにchatの履歴を保存
     session['chat_his'] = chat_his
     return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list)
+
 
 # chatの処理
 def chat(text,ai):

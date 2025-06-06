@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 {% block content %}
-    <p>ホーム画面</p>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main/style.css') }}">
+    <img src="{{ url_for('static', filename='main/logo.png') }} "width="250">
     {% for chat in chat_his %}
         <p class="user">{{ chat['user'] }}</p>
         <p class="model">{{ chat['model'] }}</p>
