@@ -24,11 +24,13 @@ def create_app():
     app.config.from_object(config[config_key])
 
     # アプリと連携
-    # csrf.init_app(app)
+    csrf.init_app(app)
     # SQLAlchemyとアプリを連携させる
     db.init_app(app)
     # Migrateとアプリを連携する
     Migrate(app,db)
+    # login_managerをアプリケーションと連携する
+    login_manager.init_app(app)
 
     from apps.main import views as main_views
     from apps.auth import views as auth_views
