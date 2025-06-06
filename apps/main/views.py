@@ -19,11 +19,10 @@ main = Blueprint(
 )
 
 @main.route('/Prsnlty')
-@login_required
 def insert():
     # 仮でユーザーを追加
     user1 = User(
-        id = 123,
+        id = '123',
         username = 'test',
         password_hash = 'test'
     )
@@ -167,7 +166,7 @@ def taskGeneration():
     ).text.split(':')
 
     rannum = random.sample(range(10), 3)
-    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
+    result = [task[rannum(0)],task[rannum[1]],task[rannum[2]]]
 
     return result
 

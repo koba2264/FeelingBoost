@@ -1,4 +1,5 @@
 from apps.app import db, login_manager
+import uuid
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -8,7 +9,7 @@ class User(db.Model, UserMixin):
     # テーブル名
     __tablename__ = "users"
     # ユーザーID
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.String, primary_key=True, default=str(uuid.uuid4()))
     # ユーザー名
     username = db.Column(db.String, index=True)
     # ハッシュ化したパスワード
