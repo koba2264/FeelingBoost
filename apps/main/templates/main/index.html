@@ -1,42 +1,50 @@
 {% extends "main/base.html" %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='main/style.css') }}">
+    <div class="fixed-header">
+        <img src="{{ url_for('static', filename='main/logo.png') }}" class="fixed-logo">
+        <a href="" class="mypage-btn">マイページ</a>
+    </div>
     <div class="main-container">
-    <div class="left-content">
-        <img src="{{ url_for('static', filename='main/logo.png') }}" width="250">
-
-        {% for chat in chat_his %}
-        <p class="user">{{ chat['user'] }}</p>
-        <p class="model">{{ chat['model'] }}</p>
-        {% endfor %}
-
-        <form action="{{ url_for('main.menu') }}" method="post">
-        {{ form.csrf_token }}
-        <input type="text" name="text">
-        <select name="prsnlty_id">
-            {% for num in range(prsnlty |length) %}
-            {% if (num + 1) == prsnlty_id %}
-                <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
-            {% else %}
-                <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
-            {% endif %}
+        <div class="left-content">
+            <div class="chat-box-wrapper">
+                <div class="chat-box" id="chatBox">
+                    {% for chat in chat_his %}
+                    <p class="user">{{ chat['user'] }}</p>
+                    <p class="model">{{ chat['model'] }}</p>
+                    {% endfor %}
+                </div>
+                <button id="expandBtn" class="expand-btn">拡大</button>
+            </div>
+            <div class="chat-box">
+                <form action="{{ url_for('main.menu') }}" method="post">
+                    {{ form.csrf_token }}
+                    <input type="text" name="text">
+                    <select name="prsnlty_id">
+                        {% for num in range(prsnlty |length) %}
+                        {% if (num + 1) == prsnlty_id %}
+                            <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
+                        {% else %}
+                            <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="投稿">
+                </form>
+            </div>
+        </div>
+        <div class="sidebar">
+            <h3>今日のタスク</h3>
+            <form method="post">
+            {% for task in task_list %}
+                <label>
+                <input type="checkbox" name="completed_tasks" value="{{ task }}">
+                {{ task }}
+                </label><br>
             {% endfor %}
-        </select>
-        <input type="submit" value="投稿">
-        </form>
+            <button type="submit">送信</button>
+            </form>
+        </div>
     </div>
-
-    <div class="sidebar">
-        <h3>今日のタスク</h3>
-        <form method="post">
-        {% for task in task_list %}
-            <label>
-            <input type="checkbox" name="completed_tasks" value="{{ task }}">
-            {{ task }}
-            </label><br>
-        {% endfor %}
-        <button type="submit">送信</button>
-        </form>
-    </div>
-    </div>
+    <script src="{{ url_for('static', filename='main/main.js') }}"></script>
 {% endblock %}
