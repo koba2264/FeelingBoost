@@ -34,7 +34,7 @@ class Task(db.Model):
   task1_judge = db.Column(db.Boolean)
   task2_judge = db.Column(db.Boolean)
   task3_judge = db.Column(db.Boolean)
-  date_judge = db.Column(db.Boolean)
+  date = db.Column(db.DateTime, default=datetime.now)
 
 # タスクの達成状況
 class TaskHistory(db.Model):

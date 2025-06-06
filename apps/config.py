@@ -18,7 +18,8 @@ class BaseConfig:
     # .envファイルの読み込み
     load_dotenv()
     # APIキー
-    GOOGLE_API_KEY=os.getenv("GeminiAPI")
+    # GOOGLE_API_KEY=os.getenv("GeminiAPI")
+    GOOGLE_API_KEY="AIzaSyDdj7xGZLMlls7LizCoUepOdtpfVtktLmw"
     genai.configure(api_key=GOOGLE_API_KEY)
 
     GEMINI = genai.GenerativeModel("gemini-1.5-flash")
