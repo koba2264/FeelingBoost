@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, current_app, request, session
-from apps.main.models import ChatHistory ,Task ,TaskHistory, Prsnlty
+from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 from flask_wtf import FlaskForm
 from datetime import datetime
 import random
-# from flask_login import current_user, login_required
+from flask_login import current_user, login_required
 
 # 仮のユーザーのID
-userid = 123
+# userid = 123
 
 main = Blueprint(
     "main",
@@ -51,7 +51,7 @@ def insert():
     db.session.add(prsnlty4)
     db.session.add(user1)
     db.session.commit()
-    return render_template('main/index.html')
+    return render_template('main/test.html')
 
 @main.route('/', methods=["GET","POST"])
 def menu():
@@ -66,8 +66,8 @@ def menu():
     prsnlty = getPrsnlty()
 
     # 直前のチャット履歴の取得
-    if 'chat_his' in session:
-        chat_his = session['chat_his']
+    if str(current_user.id) in session:
+        chat_his = session[str(current_user.id)]
     else:
         chat_his = []
 
@@ -80,7 +80,7 @@ def menu():
         # 人格プロンプト文を設定
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
-        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください"})
+        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください,また過去と同じようなほめ方はやめて毎回違うほめ方をしてください。"})
         
         # 投稿の取得
         text = request.form['text']
@@ -93,7 +93,7 @@ def menu():
         chat_his.insert(0,{'user':text,'model':response})
      
     # セッションにchatの履歴を保存
-    session['chat_his'] = chat_his
+    session[str(current_user.id)] = chat_his
     return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list)
 
 # chatの処理
@@ -108,7 +108,7 @@ def chat(text,ai):
 def saveHistory(text,response):
     # chatの履歴を格納
     chat_his = ChatHistory(
-        user_id = userid,
+        user_id = current_user.id,
         user = text,
         model = response
     )
@@ -121,7 +121,7 @@ def getHistory():
     histories = (
         db.session.query(ChatHistory)
         # 後でログイン中のユーザーIDへ変更する
-        .filter(ChatHistory.user_id == userid)
+        .filter(ChatHistory.user_id == current_user.id)
         .all()
     )
     for his in histories:
@@ -161,7 +161,8 @@ def taskGeneration():
             "top_k": 40
         }
     ).text.split(':')
-
+    if (len(task) == 1):
+        task = task[0].split('：')
     rannum = random.sample(range(10), 3)
     result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
 
