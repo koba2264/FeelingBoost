@@ -167,7 +167,7 @@ def taskGeneration():
     if (len(task) == 1):
         task = task[0].split('：')
     rannum = random.sample(range(10), 3)
-    result = [task[rannum(0)],task[rannum[1]],task[rannum[2]]]
+    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
 
     return result
 
