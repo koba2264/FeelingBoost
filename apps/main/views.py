@@ -3,6 +3,8 @@ from apps.main.models import ChatHistory ,Task ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 from flask_wtf import FlaskForm
+from datetime import datetime
+import random
 # from flask_login import current_user, login_required
 
 # 仮のユーザーのID
@@ -14,10 +16,6 @@ main = Blueprint(
     template_folder="templates",
     static_folder="static",
 )
-
-@main.route('/')
-def index():
-    return render_template('main/index.html')
 
 @main.route('/Prsnlty')
 def insert():
@@ -55,8 +53,9 @@ def insert():
     db.session.commit()
     return render_template('main/index.html')
 
-@main.route('/menu', methods=["GET","POST"])
+@main.route('/', methods=["GET","POST"])
 def menu():
+    task_list = taskGeneration()
     form = FlaskForm()
     # 設定をconfigから取得
     gemini_pro = current_app.config["GEMINI"]
@@ -90,11 +89,12 @@ def menu():
         # レスポンスの生成
         response = chat(text,ai)
         # chatの履歴へ追加
-        chat_his.append({'user':text,'model':response})
+        # chat_his.append({'user':text,'model':response})
+        chat_his.insert(0,{'user':text,'model':response})
      
     # セッションにchatの履歴を保存
     session['chat_his'] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list)
 
 # chatの処理
 def chat(text,ai):
@@ -146,4 +146,26 @@ def serchPrsnlty(id):
         db.session.query(Prsnlty).filter(Prsnlty.prsnlty_id == id).first()
     )
     return prsnlty.prompt
+
+def taskGeneration():
+    today = datetime.today().strftime("%Y年%m月%d日")
+    prompt = f"あなたはポジティブで人を褒めるのが得意なコーチです。今日は{today}です。毎日達成できる、シンプルで簡単な日常タスクを3つ考えてください。それぞれのタスクは1文で、短く、わかりやすくしてください。難しいことではなく、実行しやすい前向きな内容にしてください。タスクは10個生成して下さい。出力形式は「今日〇〇してみましょう」のようにして一文でタスクどうしは「:」でつなげてください。"
+    gemini_pro = current_app.config["GEMINI"].start_chat()
+    # task = gemini_pro.send_message(prompt).text.split(':')
+    task = gemini_pro.model.generate_content(
+        prompt,
+        generation_config={
+            "temperature": 1.2,
+            "top_p": 0.9,
+            "top_k": 40
+        }
+    ).text.split(':')
+
+    rannum = random.sample(range(10), 3)
+    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
+    print(rannum)
+    return result
+
+    
+
     
