@@ -1,3 +1,5 @@
 # Python のキャッシュファイル
 __pycache__/
 *.py[cod]
+# DBファイル
+*.sqlite
