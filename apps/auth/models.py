@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     point = db.Column(db.Integer, default=0)
 
     # 関連する履歴
-    user_chat_historys = db.relationship("ChatHistory",backref="user",order_by="asc(ChatHistory.history_id)")
+    user_chat_historys = db.relationship("ChatHistory",backref="user1",order_by="asc(ChatHistory.history_id)")
     # 関連するタスク
     user_task = db.relationship("Task",backref="user",order_by="asc(Task.task_id)")
     # 関連するタスクの完了履歴

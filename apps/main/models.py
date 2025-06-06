@@ -12,11 +12,10 @@ class ChatHistory(db.Model):
   history_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   # ユーザーID
   user_id = db.Column(db.String, db.ForeignKey("users.id"))
-  # 発言者
-  # ユーザーの発言:'user' モデルの返答:'model'
-  role = db.Column(db.String)
-  # chat内容
-  text = db.Column(db.String)
+  # ユーザーの発言
+  user = db.Column(db.String)
+  # AIからの回答
+  model = db.Column(db.String)
 
 # 現在のタスク
 class Task(db.Model):
