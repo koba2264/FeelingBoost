@@ -6,6 +6,7 @@
         <p class="model">{{ chat['model'] }}</p>
     {% endfor %}
     <form action="{{ url_for('main.menu') }}" method="post">
+        {{ form.csrf_token }}
         <input type="text" name="text">
         <select name="prsnlty_id">
             {% for num in range(prsnlty |length) %}

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, current_app, request, session
 from apps.main.models import ChatHistory ,Task ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
+from flask_wtf import FlaskForm
 # from flask_login import current_user, login_required
 
 # 仮のユーザーのID
@@ -56,6 +57,7 @@ def insert():
 
 @main.route('/menu', methods=["GET","POST"])
 def menu():
+    form = FlaskForm()
     # 設定をconfigから取得
     gemini_pro = current_app.config["GEMINI"]
     prsnlty_id = 1
@@ -92,7 +94,7 @@ def menu():
      
     # セッションにchatの履歴を保存
     session['chat_his'] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form)
 
 # chatの処理
 def chat(text,ai):
