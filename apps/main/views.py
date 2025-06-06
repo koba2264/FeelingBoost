@@ -3,6 +3,7 @@ from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
 from flask_wtf import FlaskForm
+
 from datetime import datetime
 import random
 from flask_login import current_user, login_required
@@ -80,7 +81,8 @@ def menu():
         # 人格プロンプト文を設定
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
-        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください,また過去と同じようなほめ方はやめて毎回違うほめ方をしてください。"})
+        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
+
         
         # 投稿の取得
         text = request.form['text']
@@ -95,6 +97,7 @@ def menu():
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
     return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list)
+
 
 # chatの処理
 def chat(text,ai):

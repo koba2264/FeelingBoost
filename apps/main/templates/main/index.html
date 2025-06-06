@@ -1,27 +1,42 @@
 {% extends "main/base.html" %}
 {% block content %}
-    <p>ホーム画面</p>
-    {% for chat in chat_his %}
+<link rel="stylesheet" href="{{ url_for('static', filename='main/style.css') }}">
+    <div class="main-container">
+    <div class="left-content">
+        <img src="{{ url_for('static', filename='main/logo.png') }}" width="250">
+
+        {% for chat in chat_his %}
         <p class="user">{{ chat['user'] }}</p>
         <p class="model">{{ chat['model'] }}</p>
-    {% endfor %}
-    <form action="{{ url_for('main.menu') }}" method="post">
+        {% endfor %}
+
+        <form action="{{ url_for('main.menu') }}" method="post">
         {{ form.csrf_token }}
         <input type="text" name="text">
         <select name="prsnlty_id">
             {% for num in range(prsnlty |length) %}
-                {% if (num + 1) == prsnlty_id %}
-                    <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
-                    {% else %}
-                    <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
-                {% endif %}
+            {% if (num + 1) == prsnlty_id %}
+                <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
+            {% else %}
+                <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
+            {% endif %}
             {% endfor %}
         </select>
         <input type="submit" value="投稿">
-    </form>
-    <ul>
+        </form>
+    </div>
+
+    <div class="sidebar">
+        <h3>今日のタスク</h3>
+        <form method="post">
         {% for task in task_list %}
-            <li>{{ task }}</li>
+            <label>
+            <input type="checkbox" name="completed_tasks" value="{{ task }}">
+            {{ task }}
+            </label><br>
         {% endfor %}
-    </ul>
+        <button type="submit">送信</button>
+        </form>
+    </div>
+    </div>
 {% endblock %}
