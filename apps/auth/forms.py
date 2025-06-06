@@ -3,14 +3,14 @@ from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 
 
-class SignUpForm(FlaskForm):
-  id = StringField(
-    "ユーザーid",
-    validators=[
-      DataRequired("ユーザーidは必須です。"),
-      Length
-    ]
-  )
+# class SignUpForm(FlaskForm):
+#   id = StringField(
+#     "ユーザーid",
+#     validators=[
+#       DataRequired("ユーザーidは必須です。"),
+#       Length
+#     ]
+#   )
 
 
 # ログインのフォームクラス

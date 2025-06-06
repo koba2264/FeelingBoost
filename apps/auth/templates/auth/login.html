@@ -10,7 +10,7 @@
     <p style="color: red;">{{ message }}</p>
     {% endfor %} {{ form.csrf_token }}
     <p>{{ form.username.label }} {{ form.username(placeholder="ユーザー名") }}</p>
-    {% for error in form.id.errors %}
+    {% for error in form.username.errors %}
     <span style="color: red;">{{ error }}</span>
     {% endfor %}
     <p>{{ form.password.label }} {{ form.password(placeholder="パスワード") }}</p>
