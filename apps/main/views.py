@@ -172,7 +172,12 @@ def taskGeneration():
 
     return result
 
-# def getTask():
+def getTask():
+    if (current_user.task1_text is None or current_user.task2_text is None or current_user.task3_text is None):
+        task = taskGeneration()
+    else:
+        task = [current_user.task1_text,current_user.task2_text,current_user.task3_text]
+    return task
     
 
     
