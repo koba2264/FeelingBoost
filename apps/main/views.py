@@ -54,14 +54,15 @@ def insert():
     db.session.commit()
     return render_template('main/index.html')
 
-@main.route('/mane', methods=["GET","POST"])
+@main.route('/menu', methods=["GET","POST"])
 def menu():
     # 設定をconfigから取得
     gemini_pro = current_app.config["GEMINI"]
+    prsnlty_id = 1
     # 前回以前の履歴の取得
     history = getHistory()
-    # chatbotのスタート
-    ai = gemini_pro.start_chat(history=history)
+    # 人格の一覧を取得
+    prsnlty = getPrsnlty()
 
     # 直前のチャット履歴の取得
     if 'chat_his' in session:
@@ -71,18 +72,27 @@ def menu():
 
     # POSTの時
     if request.method == 'POST':
+        # 人格idの取得
+        prsnlty_id = int(request.form['prsnlty_id'])
+        # 人格のプロンプト文を取得
+        prsnlty_plompt = serchPrsnlty(prsnlty_id)
+        # 人格プロンプト文を設定
+        history.append({"role":"user", "parts":prsnlty_plompt})
+        # 共通のプロンプト文を設定
+        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください"})
+        
         # 投稿の取得
         text = request.form['text']
+        # chatbotのスタート
+        ai = gemini_pro.start_chat(history=history)
         # レスポンスの生成
         response = chat(text,ai)
-        # response = ai.send_message(text)
-        # print(response.text)
         # chatの履歴へ追加
         chat_his.append({'user':text,'model':response})
      
     # セッションにchatの履歴を保存
     session['chat_his'] = chat_his
-    return render_template('main/index.html', chat_his=chat_his)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id)
 
 # chatの処理
 def chat(text,ai):
@@ -117,13 +127,21 @@ def getHistory():
     
     return history
 
-
+# 人格の一覧を取得
 def getPrsnlty():
     prsnlty = []
     prsnlties = (
         db.session.query(Prsnlty).all()
     )
     for prs in prsnlties:
-        prsnlties = [{}]
+        prsnlty.append({"id":prs.prsnlty_id, "name":prs.name})
+    
+    return prsnlty
 
+# 人格のidからプロンプト文を取得
+def serchPrsnlty(id):
+    prsnlty = (
+        db.session.query(Prsnlty).filter(Prsnlty.prsnlty_id == id).first()
+    )
+    return prsnlty.prompt
     
