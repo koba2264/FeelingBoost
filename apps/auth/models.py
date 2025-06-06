@@ -1,6 +1,7 @@
 from apps.app import db, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 # Userクラス
 # UserMixinを継承することでflask_loginの機能を利用可能にする
@@ -15,11 +16,21 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String)
     # べた褒めポイント
     point = db.Column(db.Integer, default=0)
+    # 進行中のタスクを保存
+    # タスクの内容
+    task1_text = db.Column(db.String)
+    task2_text = db.Column(db.String)
+    task3_text = db.Column(db.String)
+    # タスクの達成状況
+    task1_judge = db.Column(db.Boolean)
+    task2_judge = db.Column(db.Boolean)
+    task3_judge = db.Column(db.Boolean)
+    task_date = db.Column(db.Date)
 
     # 関連する履歴
     user_chat_historys = db.relationship("ChatHistory",backref="user1",order_by="asc(ChatHistory.history_id)")
-    # 関連するタスク
-    user_task = db.relationship("Task",backref="user",order_by="asc(Task.task_id)")
+    # 関連するタスク(いったん削除変更)
+    # user_task = db.relationship("Task",backref="user",order_by="asc(Task.task_id)")
     # 関連するタスクの完了履歴
     user_task_history = db.relationship("TaskHistory",backref="user",order_by="asc(TaskHistory.task_history_id)")
 
