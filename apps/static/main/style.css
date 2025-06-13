@@ -1,8 +1,36 @@
 body {
+    zoom: 90%;
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 20px;
+}
+
+.chat-box-wrapper {
+    position: relative;
+}
+
+.chat-box {
+    max-height: 190px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 6px;
+}
+
+.expand-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.expand-btn:hover {
+    background-color: #1565c0;
 }
 
 .user {
@@ -21,6 +49,8 @@ body {
     border-radius: 4px;
 }
 
+
+
 form {
     background-color: #fff;
     padding: 15px;
@@ -28,14 +58,52 @@ form {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.fixed-logo {
+    height: 50px;
+}
+
+.mypage-btn {
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.mypage-btn:hover {
+    background-color: #1565c0;
+}
+
 .main-container {
+    margin-top: 90px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 20px;
+    display: ;
 }
 
 .left-content {
-    width: 70%;
+    flex: 0 1 50%;
+    min-width: 70%;
 }
 
 .sidebar {
@@ -44,6 +112,7 @@ form {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 }
 
 .sidebar h3 {
@@ -101,4 +170,10 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #45a049;
+}
+
+@media screen and (min-width: 800px) {
+    .main-container {
+        flex-direction: row;
+    }
 }
