@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: d7931535e3e9
+Revision ID: eabfbc4ced94
 Revises: 
-Create Date: 2025-06-13 14:21:05.424135
+Create Date: 2025-06-13 19:38:35.899461
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd7931535e3e9'
+revision = 'eabfbc4ced94'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('prsnlty_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('prompt', sa.String(), nullable=True),
+    sa.Column('rarity', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('prsnlty_id')
     )
     op.create_table('users',
@@ -37,6 +38,7 @@ def upgrade():
     sa.Column('task3_judge', sa.Boolean(), nullable=True),
     sa.Column('task_date', sa.Date(), nullable=True),
     sa.Column('profile_image', sa.String(), nullable=True),
+    sa.Column('gacha_point', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('users', schema=None) as batch_op:

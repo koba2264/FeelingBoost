@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
+from apps.gacha.models import GachaHistory
 from apps.app import db
 from flask_wtf import FlaskForm
-from flask_login import login_required
 from datetime import datetime
 import random
 from flask_login import current_user, login_required
@@ -180,19 +180,19 @@ def getHistory():
 
 # 人格の一覧を取得
 def getPrsnlty():
-    prsnlty = []
+    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":5, "name":"ポジティブマネージャー"}]
     prsnlties = (
-        db.session.query(Prsnlty).all()
+        db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
     )
     for prs in prsnlties:
-        prsnlty.append({"id":prs.prsnlty_id, "name":prs.name})
-    
+        prsnlty.append({"id":prs.Prsnlty.prsnlty_id, "name":prs.Prsnlty.name})
+
     return prsnlty
 
 # 人格のidからプロンプト文を取得
 def serchPrsnlty(id):
     prsnlty = (
-        db.session.query(Prsnlty).filter(Prsnlty.prsnlty_id == id).first()
+        db.session.query(Prsnlty,).filter(Prsnlty.prsnlty_id == id).first()
     )
     return prsnlty.prompt
 
@@ -287,7 +287,6 @@ def mypage():
     for i in task_zip:
         if (i[0]):
             check_task.append(i[1])
-
 
     # date = db.session.query(TaskHistory.date).filter_by(id=current_user.get_id()).all()
     return render_template("main/mypage.html",username = username,point = point,check_task = check_task)
