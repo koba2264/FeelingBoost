@@ -27,6 +27,8 @@ class User(db.Model, UserMixin):
     task2_judge = db.Column(db.Boolean)
     task3_judge = db.Column(db.Boolean)
     task_date = db.Column(db.Date)
+    # プロフィール画像
+    profile_image = db.Column(db.String, default="default.png")
 
     # 関連する履歴
     user_chat_historys = db.relationship("ChatHistory",backref="user1",order_by="asc(ChatHistory.history_id)")
