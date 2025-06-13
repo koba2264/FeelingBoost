@@ -4,12 +4,6 @@ from wtforms.validators import DataRequired, Email, Length
 
 
 class SignUpForm(FlaskForm):
-  id = IntegerField(
-    "ユーザーid",
-    validators=[
-      DataRequired("ユーザーidは必須です。"),
-    ],
-  )
   username = StringField(
     "ユーザー名",
     validators=[
