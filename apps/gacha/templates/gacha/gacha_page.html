@@ -1,0 +1,11 @@
+<html>
+<head>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+    <button id="drawButton">ガチャを引く！</button>
+    <div id="result"></div>
+    <canvas id="three-canvas"></canvas>
+    <script src="{{ url_for('gacha.static',filename='gacha/gacha.js') }}"></script>
+</body>
+</html>
