@@ -21,12 +21,6 @@ main = Blueprint(
 
 @main.route('/Prsnlty')
 def insert():
-    # 仮でユーザーを追加
-    user1 = User(
-        id = '123',
-        username = 'test',
-        password_hash = 'test'
-    )
     prsnlty1 = Prsnlty(
         prsnlty_id = 1,
         name = 'ポジティブコーチ',
@@ -51,14 +45,15 @@ def insert():
     db.session.add(prsnlty2)
     db.session.add(prsnlty3)
     db.session.add(prsnlty4)
-    db.session.add(user1)
     db.session.commit()
     return render_template('main/test.html')
 
 @main.route('/', methods=["GET","POST"])
 @login_required
 def menu():
-    task_list = getTask()
+    task = getTask()
+    task_list = task[0]
+    task_result = task[1]
     form = FlaskForm()
     # 設定をconfigから取得
     gemini_pro = current_app.config["GEMINI"]
@@ -97,7 +92,7 @@ def menu():
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result)
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 # @main.route()
@@ -181,7 +176,9 @@ def getTask():
         saveTask(task_list)
     else:
         task_list = [current_user.task1_text,current_user.task2_text,current_user.task3_text]
-    return task_list
+    task_result = [current_user.task1_judge, current_user.task2_judge, current_user.task3_judge]
+    task = [task_list,task_result]
+    return task
 
 # タスクをデータベースに保存
 def saveTask(task_list):
