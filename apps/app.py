@@ -34,8 +34,10 @@ def create_app():
 
     from apps.main import views as main_views
     from apps.auth import views as auth_views
+    from apps.gacha import views as gacha_views
 
     app.register_blueprint(main_views.main)
     app.register_blueprint(auth_views.auth, url_prefix="/auth")
+    app.register_blueprint(gacha_views.gacha, url_prefix="/gacha")
 
     return app

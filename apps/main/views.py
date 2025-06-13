@@ -82,13 +82,15 @@ def menu():
         
         # 投稿の取得
         text = request.form['text']
-        # chatbotのスタート
-        ai = gemini_pro.start_chat(history=history)
-        # レスポンスの生成
-        response = chat(text,ai)
-        # chatの履歴へ追加
-        # chat_his.append({'user':text,'model':response})
-        chat_his.insert(0,{'user':text,'model':response})
+        # テキストが入力された場合のみ実行
+        if (text != ''):    
+            # chatbotのスタート
+            ai = gemini_pro.start_chat(history=history)
+            # レスポンスの生成
+            response = chat(text,ai)
+            # chatの履歴へ追加
+            # chat_his.append({'user':text,'model':response})
+            chat_his.insert(0,{'user':text,'model':response})
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
