@@ -36,7 +36,7 @@ def signup():
         # GETパラメータにnextキーが存在し、値がない場合はログインページへリダイレクト
         next_ = request.args.get("next")
         if next_ is None or not next_.startswith("/"):
-            next_ = url_for("auth.login")
+            next_ = url_for("main.menu")
         return redirect(next_)
     return render_template("auth/signup.html", form=form)
 

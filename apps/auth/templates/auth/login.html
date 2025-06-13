@@ -19,4 +19,6 @@
     {% endfor %}
     <p>{{ form.submit() }}</p>
   </form>
+
+  <p>アカウントをお持ちでないですか？<a href="{{ url_for('auth.signup') }}">登録する</a></p>
 {% endblock %}

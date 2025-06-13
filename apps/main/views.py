@@ -19,6 +19,18 @@ main = Blueprint(
     static_folder="static",
 )
 
+# @main.route('/task')
+# def task():
+#     task1 = TaskHistory(
+#         user_id='ad83120d-e2c5-403e-9741-8b44d5ce14bf',
+#         task1=1,
+#         task2=1,
+#         task3=0,
+#     )
+#     db.session.add(task1)
+#     db.session.commit()
+#     return render_template('main/test.html')
+
 @main.route('/Prsnlty')
 def insert():
     prsnlty1 = Prsnlty(
@@ -244,7 +256,7 @@ def saveTaskHistory():
 
 @main.route("/mypage")
 @login_required
-def mypage_user():
+def mypage():
     # 達成したタスクを入れるためのリストです
     check_task = []
     # ユーザー名を取得しています
@@ -252,13 +264,16 @@ def mypage_user():
     # ポイントを取得しています
     point = current_user.point
     # タスクを達成しているかを判定するtask_judgeを取得しています
-    task_judge = db.session.query(User.task1_judge,User.task2_judge,User.task3_judge).filter_by(id=current_user.get_id())
+    task_judge = db.session.query(User.task1_judge,User.task2_judge,User.task3_judge).filter_by(id=current_user.get_id()).first()
     # タスクの内容を取得しています
-    task_text = db.session.query(User.task1_text,User.task2_text,User.task3_text).filter_by(id=current_user.get_id())
+    task_text = db.session.query(User.task1_text,User.task2_text,User.task3_text).filter_by(id=current_user.get_id()).first()
     # task_judgeとtask_textをそれぞれ対応する番号とペアになるようにしました
     task_zip = zip(task_judge,task_text)
     # forで達成しているタスクをリストに追加しています
     for i in task_zip:
-        if (i[0] == 1):
+        if (i[0]):
             check_task.append(i[1])
+
+
+    # date = db.session.query(TaskHistory.date).filter_by(id=current_user.get_id()).all()
     return render_template("main/mypage.html",username = username,point = point,check_task = check_task)
