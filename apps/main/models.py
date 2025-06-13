@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from apps.app import db
-from werkzeug.security import generate_password_hash
 
 # chat履歴保存
 class ChatHistory(db.Model):
