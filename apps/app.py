@@ -12,7 +12,7 @@ csrf = CSRFProtect()
 # LoginManagerをインスタンス化
 login_manager = LoginManager()
 # 未ログイン時のリダイレクト先
-login_manager.login_view = "auth.signup"
+login_manager.login_view = "auth.login"
 # ログイン後に表示するメッセージの設定
 login_manager.login_message = ""
 
