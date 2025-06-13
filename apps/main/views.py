@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app, request, session
+from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
@@ -41,10 +41,16 @@ def insert():
         name = '熱血応援団長',
         prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。'
     )
+    prsnlty5 = Prsnlty(
+        prsnlty_id = 5,
+        name = 'ポジティブマネージャー',
+        prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
+    )
     db.session.add(prsnlty1)
     db.session.add(prsnlty2)
     db.session.add(prsnlty3)
     db.session.add(prsnlty4)
+    db.session.add(prsnlty5)
     db.session.commit()
     return render_template('main/test.html')
 
@@ -94,7 +100,7 @@ def menu():
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, )
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 @main.route('/task', methods=["POST"])
@@ -120,6 +126,12 @@ def taskSave():
     db.session.commit()
     
     return redirect(url_for('main.menu'))
+
+# プロフィール画像の取得
+@main.route("/profile_image")
+def profile_image():
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"],current_user.
+profile_image)
 
 # chatの処理
 def chat(text,ai):
