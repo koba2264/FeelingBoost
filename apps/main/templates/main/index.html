@@ -36,6 +36,7 @@
         <div class="sidebar">
             <h3>今日のタスク</h3>
             <form method="post">
+            {{ form.csrf_token }}
             {% for task in task_list %}
                 <label>
                 <input type="checkbox" name="completed_tasks" value="{{ task }}">
