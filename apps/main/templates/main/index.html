@@ -8,15 +8,18 @@
     <div class="main-container">
         <div class="left-content">
             <div class="chat-box-wrapper">
-                <div class="chat-box" id="chatBox">
+                <div class="right-btn">
+                    <img id="expandBtn" class="expand-icon" 
+                    src="{{ url_for('static', filename='main/up.png') }}" >
+                    </div>
+                <div class="chat-box1" id="chatBox">
                     {% for chat in chat_his %}
                     <p class="user">{{ chat['user'] }}</p>
                     <p class="model">{{ chat['model'] }}</p>
                     {% endfor %}
                 </div>
-                <button id="expandBtn" class="expand-btn">拡大</button>
             </div>
-            <div class="chat-box">
+            <div class="chat-box2">
                 <form action="{{ url_for('main.menu') }}" method="post">
                     {{ form.csrf_token }}
                     <input type="text" name="text">

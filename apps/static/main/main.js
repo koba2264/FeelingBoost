@@ -5,20 +5,28 @@ let isExpanded = false;
 expandBtn.addEventListener('click', () => {
   if (!isExpanded) {
     chatBox.style.position = 'fixed';
+    chatBox.style.top = '90px';
     chatBox.style.left = '50%';
     chatBox.style.transform = 'translateX(-50%)';
     chatBox.style.width = '90%';
     chatBox.style.height = '80vh';
     chatBox.style.maxHeight = 'none';
     chatBox.style.zIndex = '2000';
-    chatBox.style.overflowY = 'auto';
     chatBox.style.backgroundColor = '#fff';
     chatBox.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
-    expandBtn.textContent = '閉じる';
+
+    expandBtn.style.position = 'fixed';
+    expandBtn.style.top = '95px';
+    expandBtn.style.right = '30px';
+    expandBtn.src = "/static/main/close.png";
+
     isExpanded = true;
   } else {
     chatBox.removeAttribute('style');
-    expandBtn.textContent = '拡大';
+    expandBtn.removeAttribute('style');
+    expandBtn.className = 'expand-icon';
+    expandBtn.src = "/static/main/up.png";
+
     isExpanded = false;
   }
 });
