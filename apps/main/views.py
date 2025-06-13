@@ -193,6 +193,9 @@ def taskGeneration():
 
 # タスクの取得
 def getTask():
+    if (current_user.task_date != date.today()):
+    # if (current_user.task_date != date(2017, 11, 12)):
+        saveTaskHistory()
     if (current_user.task1_text is None or current_user.task2_text is None or current_user.task3_text is None):
         task_list = taskGeneration()
         saveTask(task_list)
@@ -213,6 +216,29 @@ def saveTask(task_list):
     # 現在日時
     current_user.task_date = date.today()
     db.session.add(current_user)
+    db.session.commit()
+
+# ユーザーに保存されているタスクの状況をヒストリーに保存する
+def saveTaskHistory():
+    point = 0
+    if(current_user.task1_judge):
+        point += 1
+    if(current_user.task2_judge):
+        point += 1
+    if(current_user.task3_judge):
+        point += 1
+    
+    task_history = TaskHistory(
+        user_id  = current_user.id,
+        task1 = current_user.task1_judge,
+        task2 = current_user.task2_judge,
+        task3 = current_user.task3_judge,
+        date  = current_user.task_date
+    )
+    current_user.task1_text = None
+    current_user.point += point
+    db.session.add(current_user)
+    db.session.add(task_history)
     db.session.commit()
     
 

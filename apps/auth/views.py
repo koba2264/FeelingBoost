@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, url_for, redirect, flash,request
 from apps.auth.forms import LoginForm, SignUpForm
 from apps.auth.models import User
 from flask_login import login_user
+from datetime import date
 
 auth = Blueprint(
     "auth",
@@ -24,6 +25,7 @@ def signup():
         user = User(
             username=form.username.data,
             password=form.password.data,
+            task_date=date.today()
         )
 
         # ユーザー情報を登録する
