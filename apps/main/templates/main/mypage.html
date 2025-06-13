@@ -1,48 +1,106 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>title</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <a href="{{ url_for('auth.logout') }}">ログアウト</a>
 
-  {{ username }}
-  {{ point }}
-  {% for task in check_task %}
-    {{task}}
-  {% endfor %}
+    <style>
+      body {
+        margin: 0;
+        background: #fefefe; /* シンプルに白ベース */
+        font-family: 'Kosugi Maru', sans-serif;
+        color: #444;
+      }
 
-  <!-- {% for da in date %}
-   {{da}} 
-  {% endfor %} -->
+      a {
+        display: inline-block;
+        margin: 1rem;
+        color: #6c5ce7;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
+      .card {
+        background: linear-gradient(135deg, #fef9ff, #f1f8ff);
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 600px;
+        margin: 2rem auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
 
-  <canvas id="myChart" width="400" height="200"></canvas>
-  <script>
-    const ctx = document.getElementById('myChart');
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: '達成タスク数',
-                data: [3, 2, 5, 1],
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="{{ url_for('auth.logout') }}">🚪 ログアウト</a>
 
-        }
-    });
-  </script>
+    <div class="card">
+      <h2>こんにちは、{{ username }}さん</h2>
+      <p>現在のポイント：<strong>{{ point }}</strong></p>
 
+      <div>
+        {% for task in check_task %}
+          <p>{{ task }}</p>
+        {% endfor %}
+      </div>
 
+      <canvas id="myChart"></canvas>
+    </div>
 
-</body>
+    <script>
+      const date = {{ format_date | tojson }};
+      const count = {{ count_list | tojson }};
+      const ctx = document.getElementById('myChart');
+      const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: date,
+              datasets: [{
+                  label: '🌈 達成タスク数',
+                  data: count,
+                  backgroundColor: 'rgba(255, 195, 234, 0.5)',
+                  borderColor: 'rgba(255, 105, 180, 0.9)',
+                  borderWidth: 3,
+                  pointBackgroundColor: '#ffb6c1',
+                  tension: 0.4
+              }]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+                  legend: {
+                      labels: {
+                          color: '#555',
+                          font: { size: 14 }
+                      }
+                  }
+              },
+              scales: {
+                  x: {
+                      ticks: {
+                          color: '#666',
+                          font: { size: 12 }
+                      }
+                  },
+                  y: {
+                      ticks: {
+                          color: '#666',
+                          font: { size: 12 }
+                      },
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    </script>
+  </body>
 </html>
