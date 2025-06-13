@@ -29,6 +29,8 @@ class User(db.Model, UserMixin):
     task_date = db.Column(db.Date)
     # プロフィール画像
     profile_image = db.Column(db.String, default="default.png")
+    # ガチャポイント
+    gacha_point = db.Column(db.Integer, default=0)
 
     # 関連する履歴
     user_chat_historys = db.relationship("ChatHistory",backref="user1",order_by="asc(ChatHistory.history_id)")
