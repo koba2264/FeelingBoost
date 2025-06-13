@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, request, session
+from flask import Blueprint, render_template, redirect, url_for, current_app, request, session
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.auth.models import User
 from apps.app import db
@@ -95,7 +95,29 @@ def menu():
     return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result)
 
 # タスクのフォームを受け取りメインページへリダイレクトする
-# @main.route()
+@main.route('/task', methods=["POST"])
+@login_required
+def taskSave():
+    # チェックボックスからデータを取得
+    check_task = request.form.getlist('completed_tasks')
+    # チェックがついている場合はTrueついていない場合はFalseに変更する
+    if ('0' in check_task):
+        current_user.task1_judge = True
+    else:
+        current_user.task1_judge = False
+    if ('1' in check_task):
+        current_user.task2_judge = True
+    else:
+        current_user.task2_judge = False
+    if ('2' in check_task):
+        current_user.task3_judge = True
+    else:
+        current_user.task3_judge = False
+
+    db.session.add(current_user)
+    db.session.commit()
+    
+    return redirect(url_for('main.menu'))
 
 # chatの処理
 def chat(text,ai):
