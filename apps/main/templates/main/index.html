@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='main/style.css') }}">
     <div class="fixed-header">
         <img src="{{ url_for('static', filename='main/logo.png') }}" class="fixed-logo">
-        <a href="" class="mypage-btn">マイページ</a>
+        <a href="{{ url_for('main.mypage') }}" class="mypage-btn">マイページ</a>
     </div>
     <div class="main-container">
         <div class="left-content">

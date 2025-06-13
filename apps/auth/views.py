@@ -2,7 +2,7 @@ from apps.app import db
 from flask import Blueprint, render_template, url_for, redirect, flash,request
 from apps.auth.forms import LoginForm, SignUpForm
 from apps.auth.models import User
-from flask_login import login_user
+from flask_login import login_user,logout_user
 from datetime import date
 
 auth = Blueprint(
@@ -36,7 +36,7 @@ def signup():
         # GETパラメータにnextキーが存在し、値がない場合はログインページへリダイレクト
         next_ = request.args.get("next")
         if next_ is None or not next_.startswith("/"):
-            next_ = url_for("auth.login")
+            next_ = url_for("main.menu")
         return redirect(next_)
     return render_template("auth/signup.html", form=form)
 
@@ -55,3 +55,8 @@ def login():
         # ログイン失敗時の処理
         flash("idかパスワードが違います")
     return render_template("auth/login.html", form=form)
+
+@auth.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
