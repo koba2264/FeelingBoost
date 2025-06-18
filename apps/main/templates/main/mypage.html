@@ -1,106 +1,81 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>title</title>
+{% extends "main/base.html" %}
+{% block content %}
+  <link href="{{ url_for('static', filename='main/mypage_style.css') }}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-      body {
-        margin: 0;
-        background: #fefefe; /* シンプルに白ベース */
-        font-family: 'Kosugi Maru', sans-serif;
-        color: #444;
-      }
+</head>
+<body>
+  <a href="{{ url_for('auth.logout') }}">ログアウト</a>
 
-      a {
-        display: inline-block;
-        margin: 1rem;
-        color: #6c5ce7;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .card {
-        background: linear-gradient(135deg, #fef9ff, #f1f8ff);
-        border-radius: 20px;
-        padding: 2rem;
-        max-width: 600px;
-        margin: 2rem auto;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
-
-      canvas {
-        max-width: 100%;
-        height: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <a href="{{ url_for('auth.logout') }}">🚪 ログアウト</a>
-
-    <div class="card">
-      <h2>こんにちは、{{ username }}さん</h2>
-      <p>現在のポイント：<strong>{{ point }}</strong></p>
-
-      <div>
-        {% for task in check_task %}
-          <p>{{ task }}</p>
-        {% endfor %}
-      </div>
-
+  <div class="card">
+    <!-- グラフエリア -->
+    <div class="chart-container">
       <canvas id="myChart"></canvas>
     </div>
 
-    <script>
-      const date = {{ format_date | tojson }};
-      const count = {{ count_list | tojson }};
-      const ctx = document.getElementById('myChart');
-      const myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-              labels: date,
-              datasets: [{
-                  label: '🌈 達成タスク数',
-                  data: count,
-                  backgroundColor: 'rgba(255, 195, 234, 0.5)',
-                  borderColor: 'rgba(255, 105, 180, 0.9)',
-                  borderWidth: 3,
-                  pointBackgroundColor: '#ffb6c1',
-                  tension: 0.4
-              }]
-          },
-          options: {
-              responsive: true,
-              plugins: {
-                  legend: {
-                      labels: {
-                          color: '#555',
-                          font: { size: 14 }
-                      }
-                  }
-              },
-              scales: {
-                  x: {
-                      ticks: {
-                          color: '#666',
-                          font: { size: 12 }
-                      }
-                  },
-                  y: {
-                      ticks: {
-                          color: '#666',
-                          font: { size: 12 }
-                      },
-                      beginAtZero: true
-                  }
-              }
+    <!-- 情報テーブル -->
+    <div class="info-table">
+      <h2>{{ username }} さん</h2>
+      <p><strong>ポイント：</strong> {{ point }}</p>
+      <p><strong>タスク一覧：</strong></p>
+      <ul>
+        {% for task in check_task %}
+          <li>{{ task }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const date = {{ format_date | tojson }};
+    const count = {{ count_list | tojson }};
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: date,
+        datasets: [{
+          label: '達成タスク数',
+          data: count,
+          backgroundColor: 'rgba(60, 150, 120, 0.2)',
+          borderColor: '#3c9678',
+          borderWidth: 2,
+          pointBackgroundColor: '#2f6653',
+          pointBorderColor: '#2f6653',
+          tension: 0 // ← 直線に！
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#2c3e3a',
+              font: { size: 14 }
+            }
           }
-      });
-    </script>
-  </body>
-</html>
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#2c3e3a',
+              font: { size: 12 }
+            }
+          },
+          y: {
+            min: 0,
+            max: 3,
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              color: '#2c3e3a',
+              font: { size: 12 }
+            }
+          }
+        }
+      }
+    });
+  </script>
+{% endblock content %}
