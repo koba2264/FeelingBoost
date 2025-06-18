@@ -3,9 +3,9 @@
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
-    <button id="drawButton">ガチャを引く！</button>
-    <div id="result"></div>
-    <canvas id="three-canvas"></canvas>
-    <script src="{{ url_for('gacha.static',filename='gacha/gacha.js') }}"></script>
+    <form action="{{ url_for('gacha.result') }}" method="post">
+        {{ form.csrf_token }}
+        <input type="submit" value="ガチャを引く">
+    </form>
 </body>
 </html>
