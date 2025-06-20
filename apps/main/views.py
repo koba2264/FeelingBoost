@@ -111,11 +111,13 @@ def menu():
             # chatの履歴へ追加
             # chat_his.append({'user':text,'model':response})
             chat_his.insert(0,{'user':text,'model':response})
-    print(prsnlty_id)
+
+    # 今日の日付の取得
+    today = date.today().strftime('%Y年%m月%d日')
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, )
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today )
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 @main.route('/task', methods=["POST"])
