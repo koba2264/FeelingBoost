@@ -39,6 +39,7 @@
         </div>
         <div class="sidebar">
             <h3>今日のタスク</h3>
+            <p>{{ today }}</p>
             <form action="{{ url_for('main.taskSave') }}" method="post">
                 {{ form.csrf_token }}
                 {% for num in range(task_list |length) %}
