@@ -305,4 +305,4 @@ def mypage():
     format_date = [date[0].strftime("%m-%d") for date in all_date]
 
     
-    return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,task=task,count_list=count_list)
+    return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list)
