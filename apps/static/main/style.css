@@ -97,18 +97,14 @@ form {
 }
 
 .mypage-btn {
-    background-color: #1976d2;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.2s;
+    font-size: 20px;
     margin-left: 72.5%;
 }
 
-.mypage-btn:hover {
-    background-color: #1565c0;
+.myimage{
+    height: 60px;
+    margin-left: 1%;
+    border-radius: 50%;
 }
 
 .main-container {
@@ -117,7 +113,7 @@ form {
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
-    display: ;
+
 }
 
 .left-content {
