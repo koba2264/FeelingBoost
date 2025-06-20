@@ -19,17 +19,19 @@ main = Blueprint(
     static_folder="static",
 )
 
-# @main.route('/task')
-# def task():
-#     task1 = TaskHistory(
-#         user_id='ad83120d-e2c5-403e-9741-8b44d5ce14bf',
-#         task1=1,
-#         task2=1,
-#         task3=0,
-#     )
-#     db.session.add(task1)
-#     db.session.commit()
-#     return render_template('main/test.html')
+@main.route('/task')
+def task():
+    task1 = TaskHistory(
+        user_id='e88934a5-afe9-419d-a274-e5aa41a46638',
+        task1=1,
+        task2=0,
+        task3=0,
+        date=datetime.strptime('2025-06-15', '%Y-%m-%d').date()
+    )
+    db.session.add(task1)
+    db.session.commit()
+    return render_template('main/test.html')
+
 
 @main.route('/Prsnlty')
 def insert():
@@ -288,5 +290,19 @@ def mypage():
         if (i[0]):
             check_task.append(i[1])
 
-    # date = db.session.query(TaskHistory.date).filter_by(id=current_user.get_id()).all()
-    return render_template("main/mypage.html",username = username,point = point,check_task = check_task)
+    all_date = db.session.query(TaskHistory.date).filter_by(user_id=current_user.get_id()).all()
+    all_task = db.session.query(TaskHistory.task1,TaskHistory.task2,TaskHistory.task3).filter_by(user_id=current_user.get_id()).order_by("date").all()
+    count = 0
+    count_list = []
+    for task in all_task:
+        for task_judge in task:
+            if(task_judge):
+                count += 1
+        count_list.append(count)
+        count = 0
+
+
+    format_date = [date[0].strftime("%m-%d") for date in all_date]
+
+    
+    return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,task=task,count_list=count_list)
