@@ -3,9 +3,15 @@
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
-    <form action="{{ url_for('gacha.result') }}" method="post">
+    <p>保有ポイント{{ current_user.point }}ポイント</p>
+    <p>5ポイント/1回</p>
+    <form action="{{ url_for('gacha.gachaApi') }}" method="post">
         {{ form.csrf_token }}
-        <input type="submit" value="ガチャを引く">
+        {% if current_user.point >= 5 %}
+            <input type="submit" value="ガチャを引く">
+        {% else %}
+            <input type="submit" value="ガチャを引く" disabled>
+        {% endif %}
     </form>
 </body>
 </html>

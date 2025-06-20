@@ -29,13 +29,18 @@ def gachaApi():
         db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
     )
     # idのみを抜き出す
-    obtainedId = [1,5]
+    obtainedId = [1,2]
     for obt in obtained:
         obtainedId.append(obt.Prsnlty.prsnlty_id)
     
     # 今回抽選される人格の一覧を取得
+    # 被りがないようにする場合
+    # prizes = (
+    #     db.session.query(Prsnlty).filter(~Prsnlty.prsnlty_id.in_(obtainedId)).all()
+    # )
+    # 被りありの場合(こっちを使用中)
     prizes = (
-        db.session.query(Prsnlty).filter(~Prsnlty.prsnlty_id.in_(obtainedId)).all()
+        db.session.query(Prsnlty).all()
     )
     # リストに移動
     prize_list = []
@@ -44,13 +49,24 @@ def gachaApi():
     
     # ランダム取得
     result = random.choice(prize_list)
-
-    # DBに保存
-    gachaHis = GachaHistory(
-        user_id = current_user.id,
-        prsnlty_id = result["id"]
-    )
-    db.session.add(gachaHis)
-    db.session.commit()
     
-    return render_template('gacha/result.html',result=result)
+    overlapping = False
+
+    # 被らなかった場合
+    if (result in prize_list):
+        # DBに保存
+        gachaHis = GachaHistory(
+            user_id = current_user.id,
+            prsnlty_id = result["id"]
+        )
+        db.session.add(gachaHis)
+        db.session.commit()
+
+        # ポイントの減少(1回5ポイント)
+        current_user.point -= 5
+    # 被った場合(1ポイント変換)
+    else:
+        overlapping = True
+        current_user.point += 1
+    
+    return render_template('gacha/result.html',result=result, overlapping=overlapping)
