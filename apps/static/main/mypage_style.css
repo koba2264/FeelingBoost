@@ -1,48 +1,51 @@
-a {
-  display: inline-block;
-  margin: 1.5rem;
-  color: #7fa68f; /* 淡い緑 */
-  font-weight: bold;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #4e6d5b; /* 濃いめの緑でホバー時のアクセント */
-}
-
 .card {
-  background: #f3f8f4; /* 明るめの緑ベース */
+  background: #f3f8f4;
   border: 1px solid #b7d0c0;
   border-radius: 6px;
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 960px;
   margin: 2rem auto;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  align-items: flex-start;
 }
 
-.info-table {
+.graph-and-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem; /* グラフとユーザー情報の間隔を縮めたいならここ調整 */
+}
+
+.chart-container {
+  flex: 2;
+}
+
+.user-info {
   flex: 1;
-  background-color: #e4eee8; /* 柔らかなグリーン */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e4eee8;
   border: 1px solid #aac9b9;
   border-radius: 4px;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
 }
 
-.info-table h2 {
+.myimage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-table {
+  text-align: center;
+  width: 100%;
+}
+
+.user-table h2 {
   margin-top: 0;
-  font-size: 1.3rem;
-  color: #38594c; /* ダークグリーン */
+  font-size: 1.2rem;
+  color: #38594c;
   border-bottom: 1px solid #8fb3a1;
   padding-bottom: 0.5rem;
-}
-
-canvas {
-  max-width: 100%;
-  height: auto;
-  background-color: #f9f9f9;
 }

@@ -6,19 +6,26 @@
 
 </head>
 <body>
+  <a href="{{ url_for('main.menu')  }}">戻る</a><br>
   <a href="{{ url_for('auth.logout')  }}">ログアウト</a>
   <div class="card">
-    <!-- グラフエリア -->
+  <div class="graph-and-info">
+    <!-- グラフ -->
     <div class="chart-container">
       <canvas id="myChart" width="600" height="300"></canvas>
     </div>
 
-    <!-- 情報テーブル -->
-    <div class="info-table">
-      <h2>{{ username }} さん</h2>
-      <p><strong>ポイント：</strong> {{ point }}</p>
+    <!-- 画像と情報 -->
+    <div class="user-info">
+      <img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage">
+      <div class="user-table">
+        <h2>{{ username }} さん</h2>
+        <p><strong>ポイント：</strong> {{ point }}</p>
+      </div>
     </div>
   </div>
+</div>
+
 
   <script>
     const date = {{ format_date | tojson }};
@@ -46,8 +53,11 @@
           legend: {
             labels: {
               color: '#2c3e3a',
-              font: { size: 14 }
-            }
+              font: { size: 14 },
+              usePointStyle: true,      
+              pointStyle: 'line'
+            },
+            onClick: (e) => e.stopPropagation()
           }
         },
         scales: {

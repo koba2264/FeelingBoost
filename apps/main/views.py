@@ -22,11 +22,11 @@ main = Blueprint(
 @main.route('/task')
 def task():
     task1 = TaskHistory(
-        user_id='e88934a5-afe9-419d-a274-e5aa41a46638',
+        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
         task1=1,
-        task2=0,
+        task2=1,
         task3=0,
-        date=datetime.strptime('2025-06-15', '%Y-%m-%d').date()
+        date=datetime.strptime('2025-06-16', '%Y-%m-%d').date()
     )
     db.session.add(task1)
     db.session.commit()
