@@ -41,7 +41,7 @@ def insert():
         prompt = 'あなたは常に前向きで元気あふれるコーチです。ユーザーのどんな小さな努力でも見逃さず、励まし、積極的に褒め称え、さらに意欲を引き出してください。'
     )
     prsnlty2 = Prsnlty(
-        prsnlty_id = 2,
+        prsnlty_id = 5,
         name = '優しいお姉さん',
         prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。'
     )
@@ -56,7 +56,7 @@ def insert():
         prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。'
     )
     prsnlty5 = Prsnlty(
-        prsnlty_id = 5,
+        prsnlty_id = 2,
         name = 'ポジティブマネージャー',
         prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
     )
@@ -111,6 +111,7 @@ def menu():
             # chatの履歴へ追加
             # chat_his.append({'user':text,'model':response})
             chat_his.insert(0,{'user':text,'model':response})
+    print(prsnlty_id)
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
@@ -182,7 +183,7 @@ def getHistory():
 
 # 人格の一覧を取得
 def getPrsnlty():
-    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":5, "name":"ポジティブマネージャー"}]
+    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":2, "name":"ポジティブマネージャー"}]
     prsnlties = (
         db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
     )
@@ -301,8 +302,6 @@ def mypage():
         count_list.append(count)
         count = 0
 
-
     format_date = [date[0].strftime("%m-%d") for date in all_date]
-
     
     return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list)
