@@ -6,8 +6,12 @@
 
 </head>
 <body>
-  <a href="{{ url_for('main.menu')  }}">戻る</a><br>
-  <a href="{{ url_for('auth.logout')  }}">ログアウト</a>
+<div class="nav-links">
+  <a href="{{ url_for('main.menu') }}">戻る</a><br>
+  <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+</div>
+
+
   <div class="card">
     <div class="graph-and-info">
       <!-- グラフ -->
