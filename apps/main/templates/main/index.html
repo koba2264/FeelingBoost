@@ -42,7 +42,7 @@
             <p>{{ today }}</p>
             <form action="{{ url_for('main.taskSave') }}" method="post">
                 {{ form.csrf_token }}
-                {% for num in range(task_list |length) %}
+                {% for num in range(task_list | length) %}
                     <label>
                     {% if task_result[num] %}
                         <input type="checkbox" name="completed_tasks" value="{{ num }}" checked>
