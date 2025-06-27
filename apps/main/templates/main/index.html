@@ -4,7 +4,7 @@
     <div class="fixed-header">
         <img src="{{ url_for('static', filename='main/logo.png') }}" class="fixed-logo">
         <a href="{{ url_for('main.mypage') }}" class="mypage-btn">{{ current_user.username }}</a>
-        <img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage">
+        <a href="{{ url_for('main.mypage') }}"><img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage"></a>
     </div>
     <div class="main-container">
         <div class="left-content">
@@ -38,8 +38,7 @@
             </div>
         </div>
         <div class="sidebar">
-            <h3>今日のタスク</h3>
-            <p>{{ today }}</p>
+            <h3>今日のタスク<span class="date">&nbsp;&nbsp;({{ today }})</span></h3>
             <form action="{{ url_for('main.taskSave') }}" method="post">
                 {{ form.csrf_token }}
                 {% for num in range(task_list | length) %}
