@@ -3,7 +3,8 @@
   border: 1px solid #b7d0c0;
   border-radius: 6px;
   padding: 1.5rem;
-  max-width: 960px;
+  width: 90%;
+  height: 500px;
   margin: 2rem auto;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
 }
@@ -11,15 +12,30 @@
 .graph-and-info {
   display: flex;
   justify-content: space-between;
-  gap: 1rem; /* グラフとユーザー情報の間隔を縮めたいならここ調整 */
+  height: 500px;
+  gap: 1rem;
 }
 
 .chart-container {
-  flex: 2;
+  flex: 3.5;
+  height: 100%;
+}
+
+#myChart {
+  width: 100%;
+  height: 100%;
+}
+
+.right-section {
+  flex: 1;
+  max-width: 220px; /* コンパクト化のための幅制限のみキープ */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .user-info {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,6 +44,7 @@
   border: 1px solid #aac9b9;
   border-radius: 4px;
   padding: 1rem;
+  height: auto;
 }
 
 .myimage {
@@ -48,4 +65,16 @@
   color: #38594c;
   border-bottom: 1px solid #8fb3a1;
   padding-bottom: 0.5rem;
+}
+
+.gacha {
+  padding: 0.5rem;
+  background-color: #e4eee8;
+  border: 1px solid #aac9b9;
+  border-radius: 4px;
+}
+
+#gacha_image {
+  width: 100%;
+  height: auto;
 }

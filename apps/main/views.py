@@ -23,12 +23,36 @@ main = Blueprint(
 def task():
     task1 = TaskHistory(
         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=1,
-        task2=1,
+        task1=0,
+        task2=0,
         task3=0,
         date=datetime.strptime('2025-06-16', '%Y-%m-%d').date()
     )
+    task2 = TaskHistory(
+        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+        task1=0,
+        task2=1,
+        task3=0,
+        date=datetime.strptime('2025-06-17', '%Y-%m-%d').date()
+    )
+    task3 = TaskHistory(
+        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+        task1=1,
+        task2=1,
+        task3=1,
+        date=datetime.strptime('2025-06-18', '%Y-%m-%d').date()
+    )
+    task4 = TaskHistory(
+        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+        task1=0,
+        task2=0,
+        task3=1,
+        date=datetime.strptime('2025-06-19', '%Y-%m-%d').date()
+    )
     db.session.add(task1)
+    db.session.add(task2)
+    db.session.add(task3)
+    db.session.add(task4)
     db.session.commit()
     return render_template('main/test.html')
 
