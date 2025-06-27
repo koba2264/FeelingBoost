@@ -117,7 +117,7 @@ def menu():
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today )
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today)
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 @main.route('/task', methods=["POST"])

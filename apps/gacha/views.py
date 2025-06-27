@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify, render_template, request
+from flask import Blueprint,jsonify, render_template, request, send_from_directory, current_app
 import random
 from flask_wtf import FlaskForm
 from apps.app import db
@@ -13,14 +13,14 @@ gacha = Blueprint(
     static_folder="static",
 )
 
-# ガチャ画面
-@gacha.route('/gacha_page')
+# ガチャホーム画面
+@gacha.route('/home')
 @login_required
-def gacha_page():
+def home():
     form = FlaskForm()
-    return render_template('gacha/gacha_page.html', form=form)
+    return render_template('gacha/home.html', form=form)
 
-# ガチャAPI
+# ガチャ結果
 @gacha.route('/result', methods=['POST'])
 @login_required
 def gachaApi():
@@ -70,3 +70,9 @@ def gachaApi():
         current_user.point += 1
     
     return render_template('gacha/result.html',result=result, overlapping=overlapping)
+
+# ガチャイメージ画像の取得
+@gacha.route("/gacha_image/<file_name>")
+def gacha_image(file_name):
+    print(file_name)
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"],file_name)
