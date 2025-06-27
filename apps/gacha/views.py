@@ -69,7 +69,7 @@ def gachaApi():
         overlapping = True
         current_user.point += 1
     
-    return render_template('gacha/result.html',result=result, overlapping=overlapping)
+    return render_template('gacha/gacha_page.html',result=result, overlapping=overlapping)
 
 # ガチャイメージ画像の取得
 @gacha.route("/gacha_image/<file_name>")
