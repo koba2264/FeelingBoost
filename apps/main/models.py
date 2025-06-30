@@ -16,25 +16,6 @@ class ChatHistory(db.Model):
   # AIからの回答
   model = db.Column(db.String)
 
-# 現在のタスク
-# class Task(db.Model):
-#   # テーブル名
-#   __tablename__ = "task"
-#   # カラム
-#   # タスクID
-#   task_id = db.Column(db.String, primary_key=True)
-#   # ユーザーID
-#   user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
-#   # タスクの内容
-#   task1_text = db.Column(db.String)
-#   task2_text = db.Column(db.String)
-#   task3_text = db.Column(db.String)
-#   # タスクの達成状況
-#   task1_judge = db.Column(db.Boolean)
-#   task2_judge = db.Column(db.Boolean)
-#   task3_judge = db.Column(db.Boolean)
-#   date = db.Column(db.DateTime, default=datetime.now)
-
 # タスクの達成状況
 class TaskHistory(db.Model):
   # テーブル名

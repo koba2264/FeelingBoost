@@ -31,9 +31,11 @@
         </div>
 
         <!-- ガチャ画像 -->
-        <div class="gacha">
-          <img id="gacha_image" src="{{ url_for('static', filename='main/gacha.png') }}">
-        </div>
+        <a href="{{ url_for('gacha.home') }}">
+          <div class="gacha">
+            <img id="gacha_image" src="{{ url_for('static', filename='main/gacha.png') }}">
+          </div>
+        </a>
       </div>
     </div>
   </div>

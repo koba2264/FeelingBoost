@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Langar&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Kosugi+Maru&family=Langar&family=Shrikhand&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="circle-box">
@@ -24,7 +25,19 @@
         <div class="circle5">
         </div>
         <div class="result">
-            <img class="result-img" src="{{ url_for('gacha.static', filename='gacha/img/man.png') }}">
+            <div class="img-container">
+                <img class="result-img" src="{{ url_for('gacha.static', filename='gacha/img/man.png') }}">
+            </div>
+            <div class="name-container">
+                <p class="name">{{ result["name"] }}</p>
+            </div>
+            <div>
+                <p class="star">
+                    {% for i in range(rarity) %}
+                        ☆
+                    {% endfor %}
+                </p>
+            </div>
         </div>
     </div>
 

@@ -142,3 +142,23 @@ body {
   left: 0;
   z-index: 0;
 }
+
+.name {
+    font-family: "Kosugi Maru", sans-serif;
+    margin-top: 1px;
+    font-size: 0.3vh;
+}
+
+.result-img {
+    margin: auto;
+    height: 100%;
+}
+
+.img-container {
+    height: 80%;
+}
+.star {
+    font-family: "Kosugi Maru", sans-serif;
+    margin-top: 1px;
+    font-size: 0.3vh;
+}
