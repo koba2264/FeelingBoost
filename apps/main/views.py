@@ -66,29 +66,39 @@ def insert():
     )
     prsnlty2 = Prsnlty(
         prsnlty_id = 2,
-        name = '優しいお姉さん',
-        prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。'
+        name = 'ポジティブマネージャー',
+        prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
     )
     prsnlty3 = Prsnlty(
         prsnlty_id = 3,
         name = '丁寧な執事',
-        prompt = 'あなたは礼儀正しく丁寧な執事の人格です。ユーザーの振る舞いや行動を敬意をもって上品に褒め、ユーザーが特別感を味わえるような表現を使ってください。'
+        prompt = 'あなたは礼儀正しく丁寧な執事の人格です。ユーザーの振る舞いや行動を敬意をもって上品に褒め、ユーザーが特別感を味わえるような表現を使ってください。',
+        rarity = 'c'
     )
     prsnlty4 = Prsnlty(
         prsnlty_id = 4,
         name = '熱血応援団長',
-        prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。'
+        prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。',
+        rarity = 'sr'
     )
     prsnlty5 = Prsnlty(
         prsnlty_id = 5,
-        name = 'ポジティブマネージャー',
-        prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
+        name = '優しいお姉さん',
+        prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。',
+        rarity = 'r',
+    )
+    prsnlty6 = Prsnlty(
+        prsnlty_id = 6,
+        name = 'パートのおばちゃん',
+        prompt = 'あなたはスーパーや食堂で働く親しみやすい“パートのおばちゃん”です。口調は少し砕けていて、お節介だけど愛があり、ユーザーの話にうんうんと頷いて共感し、時には笑い飛ばしながらも全力で褒めて励ましてあげてください。日常の些細なことでも『よく頑張ったねぇ～！』『アンタ偉いじゃないの～！』と温かく受け止め、まるで世話好きなご近所さんのような存在でいてください。',
+        rarity = 'ssr',
     )
     db.session.add(prsnlty1)
     db.session.add(prsnlty2)
     db.session.add(prsnlty3)
     db.session.add(prsnlty4)
     db.session.add(prsnlty5)
+    db.session.add(prsnlty6)
     db.session.commit()
     return render_template('main/test.html')
 
@@ -135,10 +145,13 @@ def menu():
             # chatの履歴へ追加
             # chat_his.append({'user':text,'model':response})
             chat_his.insert(0,{'user':text,'model':response})
+
+    # 今日の日付の取得
+    today = date.today().strftime('%Y年%m月%d日')
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, )
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today)
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 @main.route('/task', methods=["POST"])
@@ -206,7 +219,7 @@ def getHistory():
 
 # 人格の一覧を取得
 def getPrsnlty():
-    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":5, "name":"ポジティブマネージャー"}]
+    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":2, "name":"ポジティブマネージャー"}]
     prsnlties = (
         db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
     )
@@ -325,8 +338,6 @@ def mypage():
         count_list.append(count)
         count = 0
 
-
     format_date = [date[0].strftime("%m-%d") for date in all_date]
-
     
     return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list)

@@ -1,11 +1,56 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガチャ</title>
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('gacha.static',filename='gacha/gacha_page.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Langar&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Kosugi+Maru&family=Langar&family=Shrikhand&display=swap" rel="stylesheet">
 </head>
 <body>
-    <form action="{{ url_for('gacha.result') }}" method="post">
-        {{ form.csrf_token }}
-        <input type="submit" value="ガチャを引く">
-    </form>
+    <div class="circle-box">
+        <div class="circle1">
+        </div>
+        <div class="circle2">
+        </div>
+        <div class="circle3">
+            <div class="push">Tap</div>
+        </div>
+        <div class="circle4">
+        </div>
+        <div class="circle5">
+        </div>
+        <div class="result">
+            <div class="img-container">
+                <img class="result-img" src="{{ url_for('gacha.static', filename='gacha/img/man.png') }}">
+            </div>
+            <div class="name-container">
+                <p class="name">{{ result["name"] }}</p>
+            </div>
+            <div>
+                <p class="star">
+                    {% for i in range(rarity) %}
+                        ☆
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <canvas class="background"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+    <script>
+        var particles = Particles.init({
+            selector: '.background',
+            sizeVariations: 10,
+            color: ['#00bbdd', '#404B69', '#DBEDF3'],
+            connectParticles: true
+        });
+    </script>
+    <script type="module" src="{{ url_for('gacha.static', filename='gacha/gacha_page.js') }}"></script>  
 </body>
 </html>

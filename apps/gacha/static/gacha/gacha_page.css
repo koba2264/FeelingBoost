@@ -1,0 +1,164 @@
+body {
+    /* background-color: #f9f9f9; */
+    height: 100vh;
+    overflow: hidden;
+}
+
+.point {
+    color: red;
+}
+
+.circle1 {
+    background-color: transparent;
+    /* background-repeat:no-repeat; */
+    position: absolute;
+    width: 55vh;
+    height: 55vh;
+    border-radius: 50%;
+    border: 17px solid #4d4d4d;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    box-shadow:
+        0 0 5px 2px rgba(0,0,0,0.28),
+        inset 0 0 5px 2px rgba(0,0,0,0.28);
+    z-index: 1;
+}
+
+.circle2 {
+    background-color: greenyellow;
+    position: absolute;
+    text-align: center;
+    width: 42vh;
+    height: 42vh;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    box-shadow:
+    0 0 4px 1px rgba(0,0,0,0.28);
+    z-index: 1;
+}
+
+.circle3 {
+    background-color: white;
+    position: absolute;
+    text-align: center;
+    width: 34vh;
+    height: 34vh;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    box-shadow:
+    0 0 4px 1px rgba(0,0,0,0.28);
+    z-index: 1;
+}
+
+.circle4 {
+    background-color: transparent;
+    /* background-repeat:no-repeat; */
+    position: absolute;
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    box-shadow:
+        0 0 2.5px 1px rgba(0,0,0,0.28),
+        inset 0 0 2.5px 1px rgba(0,0,0,0.28);
+    z-index: 0;
+}
+
+.circle5 {
+    background-color: transparent;
+    /* background-repeat:no-repeat; */
+    position: absolute;
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+    border: 3.3px solid skyblue;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    box-shadow:
+        0 0 1px 0.2px rgba(0,0,0,0.28),
+        inset 0 0 1px 0.2px rgba(0,0,0,0.28);
+    z-index: 0;
+}
+
+.result {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    height: 2.5vh;
+    width: 2.5vh;
+    z-index: 0;
+}
+
+.circle-box {
+  background: #fff;
+  /* border-radius: 5px; */
+  /* padding: 20px; */
+  text-align: center;
+  /* position: absolute; */
+  z-index: 1;
+}
+
+.push {
+    font-family: "Shrikhand", serif;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    height: 5rem;
+    font-size: 3rem;
+    text-align:center;
+    line-height:5rem;
+    z-index: 3;
+}
+
+.background {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.name {
+    font-family: "Kosugi Maru", sans-serif;
+    margin-top: 1px;
+    font-size: 0.3vh;
+}
+
+.result-img {
+    margin: auto;
+    height: 100%;
+}
+
+.img-container {
+    height: 80%;
+}
+.star {
+    font-family: "Kosugi Maru", sans-serif;
+    margin-top: 1px;
+    font-size: 0.3vh;
+}

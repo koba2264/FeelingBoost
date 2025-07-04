@@ -4,7 +4,7 @@
     <div class="fixed-header">
         <img src="{{ url_for('static', filename='main/logo.png') }}" class="fixed-logo">
         <a href="{{ url_for('main.mypage') }}" class="mypage-btn">{{ current_user.username }}</a>
-        <img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage">
+        <a href="{{ url_for('main.mypage') }}"><img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage"></a>
     </div>
     <div class="main-container">
         <div class="left-content">
@@ -26,11 +26,11 @@
                     <input type="text" name="text">
                     <select name="prsnlty_id">
                         {% for num in range(prsnlty |length) %}
-                        {% if (num + 1) == prsnlty_id %}
-                            <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
-                        {% else %}
-                            <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
-                        {% endif %}
+                            {% if (num + 1) == prsnlty_id %}
+                                <option value="{{ prsnlty[num]['id'] }}" selected>{{ prsnlty[num]['name'] }}</option>
+                            {% else %}
+                                <option value="{{ prsnlty[num]['id'] }}">{{ prsnlty[num]['name'] }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                     <input type="submit" value="投稿">
@@ -38,10 +38,10 @@
             </div>
         </div>
         <div class="sidebar">
-            <h3>今日のタスク</h3>
+            <h3>今日のタスク<span class="date">&nbsp;&nbsp;({{ today }})</span></h3>
             <form action="{{ url_for('main.taskSave') }}" method="post">
                 {{ form.csrf_token }}
-                {% for num in range(task_list |length) %}
+                {% for num in range(task_list | length) %}
                     <label>
                     {% if task_result[num] %}
                         <input type="checkbox" name="completed_tasks" value="{{ num }}" checked>
