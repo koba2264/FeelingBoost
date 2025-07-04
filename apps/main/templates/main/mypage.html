@@ -6,39 +6,51 @@
 
 </head>
 <body>
-<div class="nav-links">
-  <a href="{{ url_for('main.menu') }}">戻る</a><br>
-  <a href="{{ url_for('auth.logout') }}">ログアウト</a>
-</div>
-
-
-  <div class="card">
-    <div class="graph-and-info">
-      <!-- グラフ -->
-      <div class="chart-container">
-        <canvas id="myChart"></canvas>
-      </div>
-
-      <!-- 右側：info + gacha -->
-      <div class="right-section">
-        <!-- 画像と情報 -->
-        <div class="user-info">
-          <img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage">
-          <div class="user-table">
-            <h2>{{ username }} さん</h2>
-            <p><strong>ポイント：</strong> {{ point }}</p>
-          </div>
+  <form id="csrf-form" style="display: none;" hidden>
+    {{ form.csrf_token }}
+  </form>
+  <div class="nav-links">
+    <a href="{{ url_for('main.menu') }}">戻る</a><br>
+    <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+  </div>
+  <div id="pop"  data-point="{{point}}" hidden>
+    <div class="pop-text">
+      <h1 class="check-text">ガチャを引きますか？</h1>
+      <h3 class="use-point">必要ポイント : 5ポイント</h3>
+      <h3 class="my-point">所持ポイント : {{point}}ポイント</h3>
+    </div>
+    <div class="pop-button">
+      <button id="ok-button">はい</button>
+      <button id="no-button">いいえ</button>
+    </div>
+  </div>
+    <div class="card">
+      <div class="graph-and-info">
+        <!-- グラフ -->
+        <div class="chart-container">
+          <canvas id="myChart"></canvas>
         </div>
 
-        <!-- ガチャ画像 -->
-        <a href="{{ url_for('gacha.home') }}">
+        <!-- 右側：info + gacha -->
+        <div class="right-section">
+          <!-- 画像と情報 -->
+          <div class="user-info">
+            <img src="{{ url_for('main.profile_image') }}" alt="プロフィール画像" class="myimage">
+            <div class="user-table">
+              <h2>{{ username }} さん</h2>
+              <p><strong>ポイント：</strong> {{ point }}</p>
+            </div>
+          </div>
+
+          <!-- ガチャ画像 -->
+
           <div class="gacha">
             <img id="gacha_image" src="{{ url_for('static', filename='main/gacha.png') }}">
           </div>
-        </a>
+
+        </div>
       </div>
     </div>
-  </div>
 
 
 
@@ -47,6 +59,38 @@
     const date = {{ format_date | tojson }};
     const count = {{ count_list | tojson }};
     const ctx = document.getElementById('myChart');
+    const gachaElm = document.getElementById('gacha_image');
+    const popElm = document.getElementById('pop');
+    const cardElm = document.querySelector('.card');
+    const okElm = document.getElementById('ok-button')
+    const noElm = document.getElementById('no-button')
+
+    
+    gachaElm.addEventListener('click', ()=>{
+      popElm.hidden = false;
+      if(popElm.dataset.point < 5){
+        okElm.disabled = true;
+      }
+    })
+
+    okElm.addEventListener('click', () =>{
+      const form = document.createElement('form');
+      form.action = "{{ url_for('gacha.gachaApi') }}";
+      form.method = 'POST';
+      const csrfToken = document.querySelector('[name="csrf_token"]').value;
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'csrf_token';
+      csrfInput.value = csrfToken;
+      form.appendChild(csrfInput);
+
+      document.body.appendChild(form);
+      form.submit();
+    })
+
+    noElm.addEventListener('click',() =>{
+      popElm.hidden = true;
+    })
 
     new Chart(ctx, {
       type: 'line',
@@ -64,7 +108,7 @@
         }]
       },
       options: {
-        responsive: false,
+        responsive: true,
         plugins: {
           legend: {
             labels: {
