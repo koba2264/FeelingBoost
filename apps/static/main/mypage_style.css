@@ -1,3 +1,7 @@
+body{
+  overflow: hidden;
+}
+
 .card {
   background: #f3f8f4;
   border: 1px solid #b7d0c0;
@@ -5,7 +9,7 @@
   padding: 1.5rem;
   width: 90%;
   height: 500px;
-  margin: 2rem auto;
+  margin: 0rem 2rem 2rem 2rem;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
   position: relative;
 
@@ -84,7 +88,7 @@
 
 .nav-links {
   margin-left: 2%;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   line-height: 2;
 }
 
