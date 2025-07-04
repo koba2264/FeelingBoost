@@ -13,13 +13,6 @@ gacha = Blueprint(
     static_folder="static",
 )
 
-# ガチャホーム画面
-@gacha.route('/home')
-@login_required
-def home():
-    form = FlaskForm()
-    return render_template('gacha/home.html', form=form)
-
 # ガチャ結果
 @gacha.route('/result', methods=['POST'])
 @login_required
@@ -53,10 +46,6 @@ def gachaApi():
         rarity = 'c'
         count = 1
     # 今回抽選される人格の一覧を取得
-    # 被りがないようにする場合
-    # prizes = (
-    #     db.session.query(Prsnlty).filter(~Prsnlty.prsnlty_id.in_(obtainedId)).all()
-    # )
     # 被りありの場合(こっちを使用中)
     prizes = (
         db.session.query(Prsnlty).filter(Prsnlty.rarity == rarity).all()

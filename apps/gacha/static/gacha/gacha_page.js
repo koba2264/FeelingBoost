@@ -15,6 +15,8 @@ animate(circle1Elm, {
     loop: true,
 });
 
+const html = `<img class="back-img" src="{{ url_for('gacha.static', filename='gacha/img/left.png') }}" alt="←">`;
+
 
 circle3Elm.addEventListener('click', () => {
     circle3Elm.innerHTML="";
@@ -52,4 +54,11 @@ circle3Elm.addEventListener('click', () => {
         delay: 150,
         scale: 40,
     });
+    window.setTimeout(() => {
+        const backElm = document.getElementById('back');
+        backElm.style.display = 'block';
+        backElm.addEventListener('click', () => {
+            history.back();
+        })
+    },1100)
 })
