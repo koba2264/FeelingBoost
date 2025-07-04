@@ -23,16 +23,16 @@ main = Blueprint(
 def task():
     task1 = TaskHistory(
         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=0,
-        task2=0,
+        task1=1,
+        task2=1,
         task3=0,
         date=datetime.strptime('2025-06-16', '%Y-%m-%d').date()
     )
     task2 = TaskHistory(
         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=0,
+        task1=1,
         task2=1,
-        task3=0,
+        task3=1,
         date=datetime.strptime('2025-06-17', '%Y-%m-%d').date()
     )
     task3 = TaskHistory(
@@ -44,8 +44,8 @@ def task():
     )
     task4 = TaskHistory(
         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=0,
-        task2=0,
+        task1=1,
+        task2=1,
         task3=1,
         date=datetime.strptime('2025-06-19', '%Y-%m-%d').date()
     )
@@ -55,6 +55,15 @@ def task():
     db.session.add(task4)
     db.session.commit()
     return render_template('main/test.html')
+
+@main.route('/point')
+def point():
+    user_id = current_user.id
+    user = User.query.get(user_id)
+
+    user.point += 100
+    db.session.commit()
+    return  render_template('main/test.html')
 
 
 @main.route('/Prsnlty')
@@ -310,6 +319,7 @@ def saveTaskHistory():
 @main.route("/mypage")
 @login_required
 def mypage():
+    form = FlaskForm()
     # 達成したタスクを入れるためのリストです
     check_task = []
     # ユーザー名を取得しています
@@ -340,4 +350,4 @@ def mypage():
 
     format_date = [date[0].strftime("%m-%d") for date in all_date]
     
-    return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list)
+    return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list,form=form)
