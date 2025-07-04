@@ -58,7 +58,8 @@ circle3Elm.addEventListener('click', () => {
         const backElm = document.getElementById('back');
         backElm.style.display = 'block';
         backElm.addEventListener('click', () => {
-            history.back();
+            // history.back();
+            window.location.href = '/mypage';
         })
     },1100)
 })

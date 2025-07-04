@@ -1,6 +1,5 @@
-from flask import Blueprint,jsonify, render_template, request, send_from_directory, current_app
+from flask import Blueprint, render_template, redirect, url_for
 import random
-from flask_wtf import FlaskForm
 from apps.app import db
 from flask_login import current_user, login_required
 from apps.gacha.models import GachaHistory
@@ -17,6 +16,8 @@ gacha = Blueprint(
 @gacha.route('/result', methods=['POST'])
 @login_required
 def gachaApi():
+    if (current_user.point < 5):
+        return redirect(url_for('main.mypage'))
     # 取得済みの人格の一覧を取得
     obtained = (
         db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
@@ -61,12 +62,13 @@ def gachaApi():
     # 結果が取得済みかどうか確認
     overlapping = result["id"] in obtainedId
 
+    # ポイントの減少(1回5ポイント)
+    current_user.point -= 5
+
     # 被った場合(1ポイント加算)
     if (overlapping):
         current_user.point += 1
-        db.session.add(current_user)
-        db.session.commit()
-    # 被らなかった場合(5ポイント減少,人格追加)
+    # 被らなかった場合(人格追加)
     else:
         # DBに保存
         gachaHis = GachaHistory(
@@ -76,7 +78,7 @@ def gachaApi():
         db.session.add(gachaHis)
         db.session.commit()
 
-        # ポイントの減少(1回5ポイント)
-        current_user.point -= 5
+    db.session.add(current_user)
+    db.session.commit()
     
     return render_template('gacha/gacha_page.html',result=result, overlapping=overlapping, rarity=count )
