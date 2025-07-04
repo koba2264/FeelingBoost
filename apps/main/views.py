@@ -102,6 +102,43 @@ def insert():
     db.session.commit()
     return render_template('main/test.html')
 
+@main.route('/taskHis')
+def taskHis():
+    TaskHistory1 = TaskHistory(
+        user_id = current_user.id,
+        task1 = True,
+        task2 = True,
+        task3 = False,
+        date = date(2025,6,25)
+    )
+    TaskHistory2 = TaskHistory(
+        user_id = current_user.id,
+        task1 = True,
+        task2 = False,
+        task3 = False,
+        date = date(2025,6,26)
+    )
+    TaskHistory3 = TaskHistory(
+        user_id = current_user.id,
+        task1 = True,
+        task2 = True,
+        task3 = True,
+        date = date(2025,6,28)
+    )
+    TaskHistory4 = TaskHistory(
+        user_id = current_user.id,
+        task1 = True,
+        task2 = True,
+        task3 = True,
+        date = date(2025,6,29)
+    )
+    db.session.add(TaskHistory1)
+    db.session.add(TaskHistory2)
+    db.session.add(TaskHistory3)
+    db.session.add(TaskHistory4)
+    db.session.commit()
+    return render_template('main/test.html')
+
 @main.route('/', methods=["GET","POST"])
 @login_required
 def menu():
