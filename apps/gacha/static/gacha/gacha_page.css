@@ -169,6 +169,7 @@ body {
     left: 20px;
     top: 20px;
     display: none;
+    cursor : pointer;
 }
 
 .back-img {
