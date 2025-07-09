@@ -168,9 +168,22 @@ body {
     left: 20px;
     top: 20px;
     display: none;
+    cursor : pointer;
 }
 
 .back-img {
     width: 64px;
     height: 64px;
+}
+
+#new {
+    z-index: 10;
+    position: absolute;
+    left: 38vw;
+    top: 19vh;
+    display: none;
+}
+
+.new-img {
+    transform: rotate(-10deg);
 }
