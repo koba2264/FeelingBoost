@@ -8,9 +8,8 @@ from datetime import datetime
 import random
 from flask_login import current_user, login_required
 from datetime import date
-
-# 仮のユーザーのID
-# userid = 123
+from forms import UploadImageForm
+from pathlib import Path
 
 main = Blueprint(
     "main",
@@ -388,3 +387,31 @@ def mypage():
     format_date = [date[0].strftime("%m-%d") for date in all_date]
     
     return render_template("main/mypage.html",username = username,point = point,check_task = check_task,format_date=format_date,count_list=count_list,form=form)
+
+# 画像アップロード画面
+@main.route("/upload", methods=["POST"])
+@login_required
+def upload_image():
+    # フォームの読み込み
+    form = UploadImageForm()
+    if form.is_submitted():
+        # 画像ファイルの取得
+        file = form.image.data
+        # ファイルの拡張子を取得
+        ext = Path(file.filename).suffix
+        # ファイル名をuuidに変換する(ファイル名を被らせないため)
+        file_name = current_user.id + ext
+
+        # 画像を保存
+        image_path = Path(
+            current_app.config["UPLOAD_FOLDER"], file_name
+        )
+        file.save(image_path)
+
+        # DBに保存
+        # 現在ログイン中のユーザーIDを使用する
+        current_user.profile_image = image_path
+        db.session.add(current_user)
+        db.session.commit()
+
+    return redirect(url_for('main.mypage'))
