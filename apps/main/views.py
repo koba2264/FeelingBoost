@@ -359,7 +359,7 @@ def saveTaskHistory():
 @main.route("/mypage")
 @login_required
 def mypage():
-    form = FlaskForm()
+    form = UploadImageForm()
     # 達成したタスクを入れるためのリストです
     check_task = []
     # ユーザー名を取得しています

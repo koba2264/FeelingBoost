@@ -103,7 +103,7 @@ body{
   text-decoration: underline;
 }
 
-#pop{
+#pop-gacha{
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 30%;
@@ -116,12 +116,87 @@ body{
   border-radius: 16px;
 }
 
+#pop-image {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  z-index: 2000;
+  padding: 1.5rem;
+  color: white;
+  border-radius: 16px;
+}
+
+/* タイトル中央寄せ */
+.upload-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #a8d1a8;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+/* フォーム全体 */
+#pop-image form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 90%;
+  color: #2c3e3a;
+}
+
+/* input[type="file"] は幅いっぱいにして適度な余白 */
+#pop-image input[type="file"] {
+  width: 90%;
+  padding: 0.7rem 1rem;
+  background-color: #f9fdf9;
+  color: #2c3e3a;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  display: block;
+}
+
+/* 送信ボタン中央寄せ＆幅調整 */
+#pop-image form button[type="submit"] {
+  background-color: #5ca65c;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 4px 6px #3f7a3f99;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  min-width: 120px;
+}
+
+/* 戻るボタンはフォームの下に幅いっぱい */
+.cancel-button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.7rem 0;
+  background-color: #4c8f4c;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
 .pop-text {
   width: 100%;
   text-align: center;
 
 }
-
 
 .pop-button{
   width: 50%;
@@ -130,12 +205,22 @@ body{
   margin-top: 1rem;
 }
 
-#ok-button{
+.ok-button{
   width: 49%;
   height: 50%;
 }
 
-#no-button{
+.no-button{
   width: 49%;
   height: 50%;
 }
+
+  input[type="file"] {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    text-align: center;
+  }
+
