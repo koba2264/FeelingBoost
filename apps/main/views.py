@@ -414,7 +414,7 @@ def upload_image():
 
         # DBに保存
         # 現在ログイン中のユーザーIDを使用する
-        current_user.profile_image = image_path
+        current_user.profile_image = file_name
         db.session.add(current_user)
         db.session.commit()
 
