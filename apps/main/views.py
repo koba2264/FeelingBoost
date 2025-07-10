@@ -8,7 +8,7 @@ from datetime import datetime
 import random
 from flask_login import current_user, login_required
 from datetime import date
-from forms import UploadImageForm
+from apps.main.forms import UploadImageForm
 from pathlib import Path
 
 main = Blueprint(
