@@ -50,14 +50,15 @@ body{
   border: 1px solid #aac9b9;
   border-radius: 4px;
   padding: 1rem;
-  height: auto;
+  height: 50%;
 }
 
 .myimage {
-  width: 60px;
-  height: 60px;
+  width: 20vh;
+  height: 20vh;
   border-radius: 50%;
   object-fit: cover;
+  margin-left: 0;
 }
 
 .user-table {
@@ -78,6 +79,8 @@ body{
   background-color: #e4eee8;
   border: 1px solid #aac9b9;
   border-radius: 4px;
+  height: 48%;
+  margin-top: 1%;
 }
 
 #gacha_image {
