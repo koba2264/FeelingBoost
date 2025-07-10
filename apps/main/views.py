@@ -8,7 +8,7 @@ from datetime import datetime
 import random
 from flask_login import current_user, login_required
 from datetime import date
-from forms import UploadImageForm
+from apps.main.forms import UploadImageForm
 from pathlib import Path
 
 main = Blueprint(
@@ -355,7 +355,7 @@ def saveTaskHistory():
 @main.route("/mypage")
 @login_required
 def mypage():
-    form = FlaskForm()
+    form = UploadImageForm()
     # 達成したタスクを入れるためのリストです
     check_task = []
     # ユーザー名を取得しています

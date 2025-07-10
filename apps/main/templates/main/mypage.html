@@ -3,9 +3,6 @@
   <link href="{{ url_for('static', filename='main/mypage_style.css') }}" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-</head>
-<body>
   <form id="csrf-form" style="display: none;" hidden>
     {{ form.csrf_token }}
   </form>
@@ -13,6 +10,7 @@
     <a href="{{ url_for('main.menu') }}">戻る</a><br>
     <a href="{{ url_for('auth.logout') }}">ログアウト</a>
   </div>
+
   <div id="pop-gacha"  data-point="{{point}}" hidden>
     <div class="pop-text">
       <h1 class="check-text">ガチャを引きますか？</h1>
@@ -25,33 +23,21 @@
     </div>
   </div>
 
-  <div id="pop-image" hidden>
-    <div class="pop-text">
-      <h1 class="check-text">ファイルをアップロード</h1>
-      <form
-       action="{{ url_for('main.upload') }}"
-       method="POST"
-       enctype="multipart/form-data"
-       novalidate="novalidate"
-      >
-        {{ form.csrf_token }}
-        <div>
-          <label>
-            <span> {{ form.image(class="form-control-file") }} </span>
-          </label>
+  <div id="pop-image">
+      <h1 class="upload-text">ファイルをアップロード</h1>
+      <div class="upload">
+        <form
+          action="{{ url_for('main.upload_image') }}"
+          method="POST"
+          enctype="multipart/form-data"
+          novalidate="novalidate"
+          >
+            {{ form.csrf_token }}
+            {{ form.image }}
+            {{ form.submit }}
+          </form>
         </div>
-        {% for error in form.image.errors %}
-        <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        <div>
-          <label> {{ form.submit(class="btn btn-primary") }} </label>
-        </div>
-      </form>
-    </div>
-    <div class="pop-button">
-      <button class="ok-button">はい</button>
-      <button class="no-button">いいえ</button>
-    </div>
+        <button class="cancel-button">戻る</button>
   </div>
 
     <div class="card">
@@ -89,24 +75,24 @@
     const date = {{ format_date | tojson }};
     const count = {{ count_list | tojson }};
     const ctx = document.getElementById('myChart');
-    const imageElm = document.querySelector('myimage');
+    const imageElm = document.querySelector('.myimage');
     const gachaElm = document.getElementById('gacha_image');
     const popGachaElm = document.getElementById('pop-gacha');
     const popImageElm = document.getElementById('pop-image');
     const cardElm = document.querySelector('.card');
-    const okElm = document.getElementById('ok-button')
-    const noElm = document.getElementById('no-button')
+    const okElm = document.querySelector('.ok-button')
+    const noElm = document.querySelector('.no-button')
 
     
     gachaElm.addEventListener('click', ()=>{
-      popElm.hidden = false;
-      if(popElm.dataset.point < 5){
+      popGachaElm.hidden = false;
+      if(popGachaElm.dataset.point < 5){
         okElm.disabled = true;
       }
     })
 
     okElm.addEventListener('click', () =>{
-      popElm.hidden = true;
+      popGachaElm.hidden = true;
       const form = document.createElement('form');
       form.action = "{{ url_for('gacha.gachaApi') }}";
       form.method = 'POST';
@@ -122,7 +108,7 @@
     })
 
     noElm.addEventListener('click',() =>{
-      popElm.hidden = true;
+      popGachaElm.hidden = true;
     })
 
     imageElm.addEventListener('click',()=>{
