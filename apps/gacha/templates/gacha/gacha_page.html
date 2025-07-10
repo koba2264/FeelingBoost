@@ -40,6 +40,12 @@
             </div>
         </div>
     </div>
+    <div id="new">
+        {% if overlapping %}
+        {% else %}
+        <img class="new-img" src="{{ url_for('gacha.static', filename='gacha/img/new3.png') }}" alt="NEW">
+        {% endif %}
+    </div>
     <div id="back">
         <img class="back-img" src="{{ url_for('gacha.static', filename='gacha/img/left.png') }}" alt="←">
     </div>

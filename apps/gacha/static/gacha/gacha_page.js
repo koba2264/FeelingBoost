@@ -56,7 +56,13 @@ circle3Elm.addEventListener('click', () => {
     });
     window.setTimeout(() => {
         const backElm = document.getElementById('back');
+        const newElm = document.getElementById('new');
         backElm.style.display = 'block';
+        newElm.style.display = 'block';
+        animate(newElm, {
+            duration: 800,
+            scale: [0,1.1,1]
+        });
         backElm.addEventListener('click', () => {
             // history.back();
             window.location.href = '/mypage';
