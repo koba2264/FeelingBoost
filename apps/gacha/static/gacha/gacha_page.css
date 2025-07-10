@@ -111,6 +111,29 @@ body {
     z-index: 0;
 }
 
+.result2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    height: 30vh;
+    width: 30vh;
+    z-index: 10;
+    display: none;
+    transform: rotateY(270deg)
+}
+
+.img-container2 {
+    height: 100%;
+}
+
+.result-img2 {
+    margin: auto;
+    height: 100%;
+}
+
 .circle-box {
   background: #fff;
   /* border-radius: 5px; */

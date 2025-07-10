@@ -8,6 +8,7 @@ const circle3Elm = document.querySelector('.circle3');
 const circle4Elm = document.querySelector('.circle4');
 const circle5Elm = document.querySelector('.circle5');
 const resultElm = document.querySelector('.result');
+const result2Elm = document.querySelector('.result2');
 
 animate(circle1Elm, {
     duration: 2000,
@@ -29,6 +30,25 @@ circle3Elm.addEventListener('click', () => {
             duration: 800,
             scale: 16
         });
+        window.setTimeout(() => {
+            animate(resultElm, {
+                duration: 800,
+                rotateY: '90deg'
+            });
+        },1200)
+        window.setTimeout(() => {
+            animate(resultElm, {
+                duration: 800,
+                rotateY: '90deg'
+            });
+        },2000)
+        window.setTimeout(() => {
+            result2Elm.style.display = 'block';
+            animate(result2Elm, {
+                duration: 800,
+                rotateY: ['-90deg','0deg']
+            });
+        },2200)
         animate(circle5Elm, {
             duration: 900,
             scale: 10
