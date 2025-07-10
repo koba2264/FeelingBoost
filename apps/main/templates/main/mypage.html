@@ -13,25 +13,44 @@
     <a href="{{ url_for('main.menu') }}">戻る</a><br>
     <a href="{{ url_for('auth.logout') }}">ログアウト</a>
   </div>
-  <div id="pop"  data-point="{{point}}" hidden>
+  <div id="pop-gacha"  data-point="{{point}}" hidden>
     <div class="pop-text">
       <h1 class="check-text">ガチャを引きますか？</h1>
       <h3 class="use-point">必要ポイント : 5ポイント</h3>
       <h3 class="my-point">所持ポイント : {{point}}ポイント</h3>
     </div>
     <div class="pop-button">
-      <button id="ok-button">はい</button>
-      <button id="no-button">いいえ</button>
+      <button class="ok-button">はい</button>
+      <button class="no-button">いいえ</button>
     </div>
   </div>
 
-  <div id="pop" hidden>
+  <div id="pop-image" hidden>
     <div class="pop-text">
       <h1 class="check-text">ファイルをアップロード</h1>
+      <form
+       action="{{ url_for('main.upload') }}"
+       method="POST"
+       enctype="multipart/form-data"
+       novalidate="novalidate"
+      >
+        {{ form.csrf_token }}
+        <div>
+          <label>
+            <span> {{ form.image(class="form-control-file") }} </span>
+          </label>
+        </div>
+        {% for error in form.image.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <div>
+          <label> {{ form.submit(class="btn btn-primary") }} </label>
+        </div>
+      </form>
     </div>
     <div class="pop-button">
-      <button id="ok-button">はい</button>
-      <button id="no-button">いいえ</button>
+      <button class="ok-button">はい</button>
+      <button class="no-button">いいえ</button>
     </div>
   </div>
 
@@ -70,8 +89,10 @@
     const date = {{ format_date | tojson }};
     const count = {{ count_list | tojson }};
     const ctx = document.getElementById('myChart');
+    const imageElm = document.querySelector('myimage');
     const gachaElm = document.getElementById('gacha_image');
-    const popElm = document.getElementById('pop');
+    const popGachaElm = document.getElementById('pop-gacha');
+    const popImageElm = document.getElementById('pop-image');
     const cardElm = document.querySelector('.card');
     const okElm = document.getElementById('ok-button')
     const noElm = document.getElementById('no-button')
@@ -102,6 +123,10 @@
 
     noElm.addEventListener('click',() =>{
       popElm.hidden = true;
+    })
+
+    imageElm.addEventListener('click',()=>{
+      popImageElm.hidden = false;
     })
 
     new Chart(ctx, {
