@@ -2,8 +2,10 @@ from apps.app import db
 from flask import Blueprint, render_template, url_for, redirect, flash,request
 from apps.auth.forms import LoginForm, SignUpForm
 from apps.auth.models import User
+from apps.gacha.models import GachaHistory
 from flask_login import login_user,logout_user
 from datetime import date
+from flask_login import current_user
 
 auth = Blueprint(
     "auth",
@@ -34,11 +36,21 @@ def signup():
             flash("指定のユーザー名は登録済みです")
             return redirect(url_for("auth.signup"))
 
+
         # ユーザー情報を登録する
         db.session.add(user)
         db.session.commit()
         # ユーザー情報をセッションに格納する
         login_user(user)
+
+        # ずんだもんを初期追加
+        gachaHis = GachaHistory(
+            user_id = current_user.id,
+            prsnlty_id = 59
+        )
+        db.session.add(gachaHis)
+        db.session.commit()
+
         # GETパラメータにnextキーが存在し、値がない場合はログインページへリダイレクト
         next_ = request.args.get("next")
         if next_ is None or not next_.startswith("/"):
