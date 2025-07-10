@@ -10,6 +10,8 @@ const circle5Elm = document.querySelector('.circle5');
 const resultElm = document.querySelector('.result');
 const result2Elm = document.querySelector('.result2');
 
+
+
 animate(circle1Elm, {
     duration: 2000,
     scale: [1, .98, 1],
@@ -30,25 +32,24 @@ circle3Elm.addEventListener('click', () => {
             duration: 800,
             scale: 16
         });
-        window.setTimeout(() => {
-            animate(resultElm, {
-                duration: 800,
-                rotateY: '90deg'
-            });
-        },1200)
-        window.setTimeout(() => {
-            animate(resultElm, {
-                duration: 800,
-                rotateY: '90deg'
-            });
-        },2000)
-        window.setTimeout(() => {
-            result2Elm.style.display = 'block';
-            animate(result2Elm, {
-                duration: 800,
-                rotateY: ['-90deg','0deg']
-            });
-        },2200)
+        // 被った場合の処理
+        if (resultElm.classList.contains('overlapping')) {
+            window.setTimeout(() => {
+                animate(resultElm, {
+                    duration: 800,
+                    rotateY: '90deg',
+                    easing: 'cubicBezier(.64,.64,.37,.08)'
+                });
+            },1200);
+            window.setTimeout(() => {
+                result2Elm.style.display = 'block';
+                animate(result2Elm, {
+                    duration: 800,
+                    rotateY: ['-90deg','0deg'],
+                    easing: 'cubicBezier(.37,.08,.64,.64)'
+                });
+            },2000)
+        }
         animate(circle5Elm, {
             duration: 900,
             scale: 10
@@ -76,13 +77,16 @@ circle3Elm.addEventListener('click', () => {
     });
     window.setTimeout(() => {
         const backElm = document.getElementById('back');
-        const newElm = document.getElementById('new');
         backElm.style.display = 'block';
-        newElm.style.display = 'block';
-        animate(newElm, {
-            duration: 800,
-            scale: [0,1.1,1]
-        });
+        if (!resultElm.classList.contains('overlapping')) {
+            const newElm = document.getElementById('new');
+            newElm.style.display = 'block';
+            animate(newElm, {
+                duration: 800,
+                scale: [0,1.1,1],
+                easing: 'easeOutBack'
+            });
+        }
         backElm.addEventListener('click', () => {
             // history.back();
             window.location.href = '/mypage';
