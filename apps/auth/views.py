@@ -25,8 +25,14 @@ def signup():
         user = User(
             username=form.username.data,
             password=form.password.data,
-            task_date=date.today()
+            task_date=date.today(),
+            point = 30,
         )
+
+                # メールアドレスの重複チェック
+        if user.is_duplicate_username():
+            flash("指定のユーザー名は登録済みです")
+            return redirect(url_for("auth.signup"))
 
         # ユーザー情報を登録する
         db.session.add(user)
