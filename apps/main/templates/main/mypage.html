@@ -23,21 +23,19 @@
     </div>
   </div>
 
-  <div id="pop-image">
-      <h1 class="upload-text">ファイルをアップロード</h1>
-      <div class="upload">
-        <form
-          action="{{ url_for('main.upload_image') }}"
-          method="POST"
-          enctype="multipart/form-data"
-          novalidate="novalidate"
-          >
-            {{ form.csrf_token }}
-            {{ form.image }}
-            {{ form.submit }}
-          </form>
-        </div>
-        <button class="cancel-button">戻る</button>
+  <div id="pop-image" hidden>
+    <h1 class="upload-text">ファイルをアップロード</h1>
+    <form
+      action="{{ url_for('main.upload_image') }}"
+      method="POST"
+      enctype="multipart/form-data"
+      novalidate="novalidate"
+    >
+      {{ form.csrf_token }}
+      {{ form.image }}
+      {{ form.submit }}
+    </form>
+    <button class="cancel-button">戻る</button>
   </div>
 
     <div class="card">
@@ -80,8 +78,9 @@
     const popGachaElm = document.getElementById('pop-gacha');
     const popImageElm = document.getElementById('pop-image');
     const cardElm = document.querySelector('.card');
-    const okElm = document.querySelector('.ok-button')
-    const noElm = document.querySelector('.no-button')
+    const okElm = document.querySelector('.ok-button');
+    const noElm = document.querySelector('.no-button');
+    const cancelElm = document.querySelector('.cancel-button');
 
     
     gachaElm.addEventListener('click', ()=>{
@@ -114,6 +113,12 @@
     imageElm.addEventListener('click',()=>{
       popImageElm.hidden = false;
     })
+
+    cancelElm.addEventListener('click',() =>{
+      popImageElm.hidden = true;
+    })
+
+
 
     new Chart(ctx, {
       type: 'line',

@@ -143,13 +143,11 @@ body{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  width: 90%;
   color: #2c3e3a;
 }
 
 /* input[type="file"] は幅いっぱいにして適度な余白 */
 #pop-image input[type="file"] {
-  width: 90%;
   padding: 0.7rem 1rem;
   background-color: #f9fdf9;
   color: #2c3e3a;
@@ -195,7 +193,6 @@ body{
 .pop-text {
   width: 100%;
   text-align: center;
-
 }
 
 .pop-button{
@@ -214,13 +211,3 @@ body{
   width: 49%;
   height: 50%;
 }
-
-  input[type="file"] {
-    display: block;
-    width: 100%;
-    background-color: #fff;
-    color: #000;
-    cursor: pointer;
-    text-align: center;
-  }
-
