@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
+from apps.main.forms import UploadImageForm
+from apps.main.prsnlty import addPrsnlty
 from apps.auth.models import User
 from apps.gacha.models import GachaHistory
 from apps.app import db
@@ -8,7 +10,6 @@ from datetime import datetime
 import random
 from flask_login import current_user, login_required
 from datetime import date
-from apps.main.forms import UploadImageForm
 from pathlib import Path
 
 main = Blueprint(
@@ -53,6 +54,7 @@ def task():
     db.session.add(task3)
     db.session.add(task4)
     db.session.commit()
+
     return render_template('main/test.html')
 
 @main.route('/point')
@@ -108,7 +110,9 @@ def insert():
     db.session.add(prsnlty5)
     db.session.add(prsnlty6)
     db.session.commit()
-    return render_template('main/test.html')
+    addPrsnlty()
+
+    return redirect(url_for('main.menu'))
 
 @main.route('/taskHis')
 def taskHis():
@@ -177,7 +181,7 @@ def menu():
         # 人格プロンプト文を設定
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
-        history.append({"role":"user", "parts":"これ以降の文章は100文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
+        history.append({"role":"user", "parts":"これ以降の文章は250文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
         
         # 投稿の取得
         text = request.form['text']

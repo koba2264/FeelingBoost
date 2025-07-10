@@ -43,19 +43,26 @@
             <div class="img-container2">
                 <img class="result-img2" src="{{ url_for('gacha.static', filename='gacha/img/coin.png') }}">
             </div>
+            <div class="message-container">
+                <p class="message">＋1ポイント</p>
+            </div>
         </div>
     </div>
     <div id="new">
-        {% if overlapping %}
-        {% else %}
         <img class="new-img" src="{{ url_for('gacha.static', filename='gacha/img/new3.png') }}" alt="NEW">
-        {% endif %}
     </div>
     <div id="back">
         <img class="back-img" src="{{ url_for('gacha.static', filename='gacha/img/left.png') }}" alt="←">
     </div>
 
     <canvas class="background"></canvas>
+    {% if overlapping %}
+        <script>
+            const resultElm = document.querySelector('.result');
+            resultElm.classList.add('overlapping');
+        </script>
+    {% else %}
+    {% endif %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
     <script>
         var particles = Particles.init({
