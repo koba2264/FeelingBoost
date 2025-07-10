@@ -107,7 +107,8 @@ form {
 
 .myimage{
     height: 60px;
-    margin-left: 1%;
+    width: 60px;
+    margin-left: 20%;
     border-radius: 50%;
 }
 
@@ -197,5 +198,3 @@ input[type="submit"]:hover {
         flex-direction: row;
     }
 }
-
-

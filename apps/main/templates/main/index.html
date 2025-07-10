@@ -1,5 +1,8 @@
 {% extends "main/base.html" %}
 {% block content %}
+{% if voice %}
+    <audio id="voice" src="{{ url_for('main.tts', timestamp=timestamp) }}" autoplay></audio>
+{% endif %}
 <link rel="stylesheet" href="{{ url_for('static', filename='main/style.css') }}">
     <div class="fixed-header">
         <img src="{{ url_for('static', filename='main/logo.png') }}" class="fixed-logo">
