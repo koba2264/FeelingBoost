@@ -24,7 +24,8 @@ class BaseConfig:
     GOOGLE_API_KEY="AIzaSyDdj7xGZLMlls7LizCoUepOdtpfVtktLmw"
     genai.configure(api_key=GOOGLE_API_KEY)
 
-    GEMINI = genai.GenerativeModel("gemini-1.5-flash")
+    # GEMINI = genai.GenerativeModel("gemini-1.5-flash")
+    GEMINI = genai.GenerativeModel("models/gemini-2.5-flash-lite-preview-06-17")
 
 
 # 個別の設定
