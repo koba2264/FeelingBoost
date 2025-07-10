@@ -14,6 +14,8 @@ class BaseConfig:
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
     # 画像のアップロード先をapps/imagesに設定する
     UPLOAD_FOLDER = str(Path(basedir, "apps", "images"))
+    # ボイス保存先をapps/voiceに設定する
+    VOICE_FOLDER = str(Path(basedir, "apps", "voice"))
     # アップロードできる画像の最大サイズを16MBに制限
     MAX_CONTENT_LENGTH = 16 * 1000 * 1000
 
