@@ -2,7 +2,7 @@
 {% block content %}
   <link href="{{ url_for('static', filename='main/mypage_style.css') }}" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <div id="overlay" hidden></div>
   <form id="csrf-form" style="display: none;" hidden>
     {{ form.csrf_token }}
   </form>
@@ -32,8 +32,8 @@
       novalidate="novalidate"
     >
       {{ form.csrf_token }}
-      {{ form.image }}
-      {{ form.submit }}
+      {{ form.image(id='image',required=true) }}
+      {{ form.submit(id='submit',disabled=false) }}
     </form>
     <button class="cancel-button">戻る</button>
   </div>
@@ -73,7 +73,7 @@
     const date = {{ format_date | tojson }};
     const count = {{ count_list | tojson }};
     const ctx = document.getElementById('myChart');
-    const imageElm = document.querySelector('.myimage');
+    const MyImageElm = document.querySelector('.myimage');
     const gachaElm = document.getElementById('gacha_image');
     const popGachaElm = document.getElementById('pop-gacha');
     const popImageElm = document.getElementById('pop-image');
@@ -81,25 +81,15 @@
     const okElm = document.querySelector('.ok-button');
     const noElm = document.querySelector('.no-button');
     const cancelElm = document.querySelector('.cancel-button');
+    const OverlayElm = document.getElementById('overlay');
 
     
     gachaElm.addEventListener('click', ()=>{
-      const form = document.createElement('form');
-      form.action = "{{ url_for('gacha.gachaApi') }}";
-      form.method = 'POST';
-      const csrfToken = document.querySelector('[name="csrf_token"]').value;
-      const csrfInput = document.createElement('input');
-      csrfInput.type = 'hidden';
-      csrfInput.name = 'csrf_token';
-      csrfInput.value = csrfToken;
-      form.appendChild(csrfInput);
-
-      document.body.appendChild(form);
-      form.submit();
-      // popGachaElm.hidden = false;
-      // if(popGachaElm.dataset.point < 5){
-      //   okElm.disabled = true;
-      // }
+      popGachaElm.hidden = false;
+      OverlayElm.hidden = false;
+      if(popGachaElm.dataset.point < 5){
+        okElm.disabled = true;
+      }
     })
 
     okElm.addEventListener('click', () =>{
@@ -120,14 +110,24 @@
 
     noElm.addEventListener('click',() =>{
       popGachaElm.hidden = true;
+      OverlayElm.hidden = true;
     })
 
-    imageElm.addEventListener('click',()=>{
+    MyImageElm.addEventListener('click',()=>{
       popImageElm.hidden = false;
+      OverlayElm.hidden = false;
+      const ImageElm = document.getElementById('image');
+      const SubmitElm = document.getElementById('submit');
+      SubmitElm.disabled = true;
+      // ファイル選択時の有効化処理
+      ImageElm.addEventListener('change', () => {
+        SubmitElm.disabled = ImageElm.files.length === 0;
+      });
     })
 
     cancelElm.addEventListener('click',() =>{
       popImageElm.hidden = true;
+      OverlayElm.hidden = true;
     })
 
 

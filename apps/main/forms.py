@@ -6,6 +6,7 @@ from wtforms.fields.simple import SubmitField
 class UploadImageForm(FlaskForm):
     # ファイルフィールド
     image = FileField(
+        "画像",
         validators=[
             # 画像が選択されているか
             FileRequired("画像ファイルを指定してください"),
