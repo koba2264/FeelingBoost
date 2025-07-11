@@ -370,6 +370,7 @@ def getTask():
     # if (current_user.task_date != date(2017, 11, 12)):
         saveTaskHistory()
     if (current_user.task1_text is None or current_user.task2_text is None or current_user.task3_text is None):
+        # うまく生成されないパターンを回避
         while (True):
             try:
                 task_list = taskGeneration()
