@@ -370,7 +370,14 @@ def getTask():
     # if (current_user.task_date != date(2017, 11, 12)):
         saveTaskHistory()
     if (current_user.task1_text is None or current_user.task2_text is None or current_user.task3_text is None):
-        task_list = taskGeneration()
+        while (True):
+            try:
+                task_list = taskGeneration()
+            except IndexError:
+                print('error')
+            else:
+                break
+
         saveTask(task_list)
     else:
         task_list = [current_user.task1_text,current_user.task2_text,current_user.task3_text]
