@@ -84,10 +84,22 @@
 
     
     gachaElm.addEventListener('click', ()=>{
-      popGachaElm.hidden = false;
-      if(popGachaElm.dataset.point < 5){
-        okElm.disabled = true;
-      }
+      const form = document.createElement('form');
+      form.action = "{{ url_for('gacha.gachaApi') }}";
+      form.method = 'POST';
+      const csrfToken = document.querySelector('[name="csrf_token"]').value;
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'csrf_token';
+      csrfInput.value = csrfToken;
+      form.appendChild(csrfInput);
+
+      document.body.appendChild(form);
+      form.submit();
+      // popGachaElm.hidden = false;
+      // if(popGachaElm.dataset.point < 5){
+      //   okElm.disabled = true;
+      // }
     })
 
     okElm.addEventListener('click', () =>{
