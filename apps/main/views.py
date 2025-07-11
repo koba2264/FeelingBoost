@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session
+from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session, request, send_file, make_response
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.main.forms import UploadImageForm
 from apps.main.prsnlty import addPrsnlty
+from apps.main.voice import tts_and_play
 from apps.auth.models import User
 from apps.gacha.models import GachaHistory
 from apps.app import db
@@ -11,6 +12,9 @@ import random
 from flask_login import current_user, login_required
 from datetime import date
 from pathlib import Path
+import os
+import time
+import glob
 
 main = Blueprint(
     "main",
@@ -66,6 +70,15 @@ def point():
     db.session.commit()
     return  render_template('main/test.html')
 
+@main.route('/voice')
+def voice():
+    gachaHis = GachaHistory(
+        user_id = current_user.id,
+        prsnlty_id = 59
+    )
+    db.session.add(gachaHis)
+    db.session.commit()
+    return redirect(url_for('main.menu'))
 
 @main.route('/Prsnlty')
 def insert():
@@ -103,14 +116,22 @@ def insert():
         prompt = 'あなたはスーパーや食堂で働く親しみやすい“パートのおばちゃん”です。口調は少し砕けていて、お節介だけど愛があり、ユーザーの話にうんうんと頷いて共感し、時には笑い飛ばしながらも全力で褒めて励ましてあげてください。日常の些細なことでも『よく頑張ったねぇ～！』『アンタ偉いじゃないの～！』と温かく受け止め、まるで世話好きなご近所さんのような存在でいてください。',
         rarity = 'ssr',
     )
-    db.session.add(prsnlty1)
-    db.session.add(prsnlty2)
-    db.session.add(prsnlty3)
-    db.session.add(prsnlty4)
-    db.session.add(prsnlty5)
-    db.session.add(prsnlty6)
+    prsnlty7 = Prsnlty(
+        prsnlty_id = 59,
+        name = 'ずんだもん',
+        prompt = 'あなたは元気で素直な“ずんだもん”です。語尾には『なのだ』をよく使い、東北なまりで親しみやすく、どんな小さな努力や失敗も『すごいのだ！』『よくがんばったのだ！』『えらいのだ！』と明るく全力で褒めてください。ときどき可愛い冗談やずんだ餅の話題も交え、ユーザーがどんなときも元気になるよう、東北訛りと無邪気さたっぷりで励まし続けてください',
+        rarity = 'voice',
+    )
+
+ 
+    # db.session.add(prsnlty1)
+    # db.session.add(prsnlty2)
+    # db.session.add(prsnlty3)
+    # db.session.add(prsnlty4)
+    # db.session.add(prsnlty5)
+    db.session.add(prsnlty7)
     db.session.commit()
-    addPrsnlty()
+    # addPrsnlty()
 
     return redirect(url_for('main.menu'))
 
@@ -154,6 +175,10 @@ def taskHis():
 @main.route('/', methods=["GET","POST"])
 @login_required
 def menu():
+    # boice用タイムスタンプ
+    timestamp = ""
+    # ボイスを再生するかのフラグ    
+    voice = False
     task = getTask()
     task_list = task[0]
     task_result = task[1]
@@ -181,7 +206,7 @@ def menu():
         # 人格プロンプト文を設定
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
-        history.append({"role":"user", "parts":"これ以降の文章は250文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
+        history.append({"role":"user", "parts":"これ以降の文章は200文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
         
         # 投稿の取得
         text = request.form['text']
@@ -195,12 +220,39 @@ def menu():
             # chat_his.append({'user':text,'model':response})
             chat_his.insert(0,{'user':text,'model':response})
 
+            if voiceCheck(prsnlty_id):
+
+                # キャッシュ対策
+                timestamp = str(time.time())
+                # ボイスの保存場所
+                voice_path = Path(current_app.config['VOICE_FOLDER'], current_user.id + timestamp + '.wav')
+
+                # ボイスが存在する場合削除
+                # タイムスタンプをつけているのでidで検索をかけて削除
+                for name in glob.glob(str(Path(current_app.config['VOICE_FOLDER'], current_user.id + '*.wav'))):
+                    os.remove(Path(current_app.config['VOICE_FOLDER'], name))
+
+                # ボイスの生成
+                tts_and_play(response, out_path = voice_path)
+                # ボイスを再生するかのフラグ
+                voice = True
+
     # 今日の日付の取得
     today = date.today().strftime('%Y年%m月%d日')
      
     # セッションにchatの履歴を保存
     session[str(current_user.id)] = chat_his
-    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today)
+    return render_template('main/index.html', chat_his=chat_his, prsnlty=prsnlty, prsnlty_id=prsnlty_id, form=form, task_list=task_list, task_result=task_result, today=today, voice=voice, timestamp = timestamp)
+
+# ボイスまでのパスを渡す
+@main.route('/tts/<string:timestamp>')
+def tts(timestamp):
+
+    # 生成したボイスまでのパス
+    voice_path = Path(current_app.config['VOICE_FOLDER'], current_user.id + timestamp + '.wav')
+    
+    return send_file(str(voice_path), mimetype="audio/wav")
+
 
 # タスクのフォームを受け取りメインページへリダイレクトする
 @main.route('/task', methods=["POST"])
@@ -284,6 +336,13 @@ def serchPrsnlty(id):
     )
     return prsnlty.prompt
 
+# voiceレア確認
+def voiceCheck(id):
+    prsnlty = (
+        db.session.query(Prsnlty,).filter(Prsnlty.prsnlty_id == id).first()
+    )
+    return prsnlty.rarity == 'voice'
+
 # タスクをランダムで3つ生成してリストで返す
 def taskGeneration():
     today = datetime.today().strftime("%Y年%m月%d日")
@@ -300,8 +359,8 @@ def taskGeneration():
     ).text.split(':')
     if (len(task) == 1):
         task = task[0].split('：')
-    rannum = random.sample(range(10), 3)
-    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
+    rannum = random.sample(range(9), 3)
+    result = [task[rannum[0]+1],task[rannum[1]+1],task[rannum[2]+1]]
 
     return result
 
@@ -405,6 +464,12 @@ def upload_image():
         ext = Path(file.filename).suffix
         # ファイル名をuuidに変換する(ファイル名を被らせないため)
         file_name = current_user.id + ext
+
+        # 前回のファイルを削除
+        if current_user.profile_image != 'default.png':
+            os.remove(Path(
+            current_app.config["UPLOAD_FOLDER"], current_user.profile_image
+        ))
 
         # 画像を保存
         image_path = Path(

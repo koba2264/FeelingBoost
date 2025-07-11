@@ -8,7 +8,7 @@ body{
   border-radius: 6px;
   padding: 1.5rem;
   width: 90%;
-  height: 500px;
+  height: 85vh;
   margin: 0rem 2rem 2rem 2rem;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
   position: relative;
@@ -18,7 +18,7 @@ body{
 .graph-and-info {
   display: flex;
   justify-content: space-between;
-  height: 500px;
+  height: 85vh;
   gap: 1rem;
 }
 
@@ -50,14 +50,15 @@ body{
   border: 1px solid #aac9b9;
   border-radius: 4px;
   padding: 1rem;
-  height: auto;
+  height: 50%;
 }
 
 .myimage {
-  width: 60px;
-  height: 60px;
+  width: 20vh;
+  height: 20vh;
   border-radius: 50%;
   object-fit: cover;
+  margin-left: 0;
 }
 
 .user-table {
@@ -78,6 +79,8 @@ body{
   background-color: #e4eee8;
   border: 1px solid #aac9b9;
   border-radius: 4px;
+  height: 48%;
+  margin-top: 1%;
 }
 
 #gacha_image {

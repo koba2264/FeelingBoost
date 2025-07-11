@@ -29,8 +29,8 @@ def gachaApi():
     
     # レアリティの抽選
     tmp = random.random()
-    # 1%
-    if (tmp < 0.01):
+    # 1% => 3%
+    if (tmp < 0.03):
     # if (True):
         rarity = 'ssr'
         count = 4
@@ -42,7 +42,7 @@ def gachaApi():
     elif (tmp < 0.41):
         rarity = 'r'
         count = 2
-    # 59%
+    # 59% => 57%
     else:
         rarity = 'c'
         count = 1
