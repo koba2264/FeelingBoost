@@ -207,6 +207,7 @@ def menu():
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
         history.append({"role":"user", "parts":"これ以降の文章は200文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
+        history.append({"role":"user", "parts":f"私の名前は{current_user.username}です。"})
         
         # 投稿の取得
         text = request.form['text']
@@ -359,9 +360,8 @@ def taskGeneration():
     ).text.split(':')
     if (len(task) == 1):
         task = task[0].split('：')
-    rannum = random.sample(range(9), 3)
-    result = [task[rannum[0]+1],task[rannum[1]+1],task[rannum[2]+1]]
-
+    rannum = random.sample(range(1,10), 3)
+    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
     return result
 
 # タスクの取得
