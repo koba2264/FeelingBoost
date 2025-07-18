@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('main.static', filename='main/style.css') }}">
     <title>メイン</title>
+    {% block head %}{% endblock %}    
 </head>
 <body> 
     {% block content %}{% endblock %}    

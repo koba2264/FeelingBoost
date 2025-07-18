@@ -1,7 +1,7 @@
 import requests
 
 def tts_and_play(text, speaker=1, out_path="output.wav"):
-    host = "http://127.0.0.1:50021"
+    host = "http://127.0.0.1:8080"
     r = requests.post(f"{host}/audio_query", params={"text": text, "speaker": speaker})
     r.raise_for_status()
     audio_query = r.json()
