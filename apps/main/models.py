@@ -42,5 +42,9 @@ class Prsnlty(db.Model):
   prompt = db.Column(db.String)
   # レアリティ
   rarity = db.Column(db.String)
+  # クレジット
+  credit = db.Column(db.String, default="")
+  # voiceID
+  voice_id = db.Column(db.Integer)
   # 抽選済みのテーブルとの関連
   user_prsnlty = db.relationship("GachaHistory",backref="gacha")

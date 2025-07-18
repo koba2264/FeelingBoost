@@ -6,6 +6,7 @@ from apps.gacha.models import GachaHistory
 from flask_login import login_user,logout_user
 from datetime import date
 from flask_login import current_user
+import uuid
 
 auth = Blueprint(
     "auth",
@@ -25,6 +26,7 @@ def signup():
     form = SignUpForm()
     if form.validate_on_submit():
         user = User(
+            id = str(uuid.uuid4()),
             username=form.username.data,
             password=form.password.data,
             task_date=date.today(),

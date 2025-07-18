@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session, request, send_file, make_response
+from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app, request, session, request, send_file, make_response, jsonify
 from apps.main.models import ChatHistory ,TaskHistory, Prsnlty
 from apps.main.forms import UploadImageForm
 from apps.main.prsnlty import addPrsnlty
@@ -23,154 +23,160 @@ main = Blueprint(
     static_folder="static",
 )
 
-@main.route('/task')
-def task():
-    task1 = TaskHistory(
-        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=1,
-        task2=1,
-        task3=0,
-        date=datetime.strptime('2025-06-16', '%Y-%m-%d').date()
-    )
-    task2 = TaskHistory(
-        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=1,
-        task2=1,
-        task3=1,
-        date=datetime.strptime('2025-06-17', '%Y-%m-%d').date()
-    )
-    task3 = TaskHistory(
-        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=1,
-        task2=1,
-        task3=1,
-        date=datetime.strptime('2025-06-18', '%Y-%m-%d').date()
-    )
-    task4 = TaskHistory(
-        user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
-        task1=1,
-        task2=1,
-        task3=1,
-        date=datetime.strptime('2025-06-19', '%Y-%m-%d').date()
-    )
-    db.session.add(task1)
-    db.session.add(task2)
-    db.session.add(task3)
-    db.session.add(task4)
-    db.session.commit()
+# @main.route('/task')
+# def task():
+#     task1 = TaskHistory(
+#         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+#         task1=1,
+#         task2=1,
+#         task3=0,
+#         date=datetime.strptime('2025-06-16', '%Y-%m-%d').date()
+#     )
+#     task2 = TaskHistory(
+#         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+#         task1=1,
+#         task2=1,
+#         task3=1,
+#         date=datetime.strptime('2025-06-17', '%Y-%m-%d').date()
+#     )
+#     task3 = TaskHistory(
+#         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+#         task1=1,
+#         task2=1,
+#         task3=1,
+#         date=datetime.strptime('2025-06-18', '%Y-%m-%d').date()
+#     )
+#     task4 = TaskHistory(
+#         user_id='b7f09824-9d2f-4ce3-b2f9-7f5553ebf529',
+#         task1=1,
+#         task2=1,
+#         task3=1,
+#         date=datetime.strptime('2025-06-19', '%Y-%m-%d').date()
+#     )
+#     db.session.add(task1)
+#     db.session.add(task2)
+#     db.session.add(task3)
+#     db.session.add(task4)
+#     db.session.commit()
 
-    return render_template('main/test.html')
+#     return render_template('main/test.html')
 
-@main.route('/point')
+@main.route('/point',methods=["POST"])
 def point():
+    print(11)
     user_id = current_user.id
     user = User.query.get(user_id)
 
     user.point += 100
+    point = user.point
     db.session.commit()
-    return  render_template('main/test.html')
+    return jsonify({'point': f"{point}"})
 
-@main.route('/voice')
-def voice():
-    gachaHis = GachaHistory(
-        user_id = current_user.id,
-        prsnlty_id = 59
-    )
-    db.session.add(gachaHis)
-    db.session.commit()
-    return redirect(url_for('main.menu'))
+# @main.route('/voice')
+# def voice():
+#     gachaHis = GachaHistory(
+#         user_id = current_user.id,
+#         prsnlty_id = 59
+#     )
+#     db.session.add(gachaHis)
+#     db.session.commit()
+#     return redirect(url_for('main.menu'))
 
-@main.route('/Prsnlty')
-def insert():
-    prsnlty1 = Prsnlty(
-        prsnlty_id = 1,
-        name = 'ポジティブコーチ',
-        prompt = 'あなたは常に前向きで元気あふれるコーチです。ユーザーのどんな小さな努力でも見逃さず、励まし、積極的に褒め称え、さらに意欲を引き出してください。'
-    )
-    prsnlty2 = Prsnlty(
-        prsnlty_id = 2,
-        name = 'ポジティブマネージャー',
-        prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
-    )
-    prsnlty3 = Prsnlty(
-        prsnlty_id = 3,
-        name = '丁寧な執事',
-        prompt = 'あなたは礼儀正しく丁寧な執事の人格です。ユーザーの振る舞いや行動を敬意をもって上品に褒め、ユーザーが特別感を味わえるような表現を使ってください。',
-        rarity = 'c'
-    )
-    prsnlty4 = Prsnlty(
-        prsnlty_id = 4,
-        name = '熱血応援団長',
-        prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。',
-        rarity = 'sr'
-    )
-    prsnlty5 = Prsnlty(
-        prsnlty_id = 5,
-        name = '優しいお姉さん',
-        prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。',
-        rarity = 'r',
-    )
-    prsnlty6 = Prsnlty(
-        prsnlty_id = 6,
-        name = 'パートのおばちゃん',
-        prompt = 'あなたはスーパーや食堂で働く親しみやすい“パートのおばちゃん”です。口調は少し砕けていて、お節介だけど愛があり、ユーザーの話にうんうんと頷いて共感し、時には笑い飛ばしながらも全力で褒めて励ましてあげてください。日常の些細なことでも『よく頑張ったねぇ～！』『アンタ偉いじゃないの～！』と温かく受け止め、まるで世話好きなご近所さんのような存在でいてください。',
-        rarity = 'ssr',
-    )
-    prsnlty7 = Prsnlty(
-        prsnlty_id = 59,
-        name = 'ずんだもん',
-        prompt = 'あなたは元気で素直な“ずんだもん”です。語尾には『なのだ』をよく使い、東北なまりで親しみやすく、どんな小さな努力や失敗も『すごいのだ！』『よくがんばったのだ！』『えらいのだ！』と明るく全力で褒めてください。ときどき可愛い冗談やずんだ餅の話題も交え、ユーザーがどんなときも元気になるよう、東北訛りと無邪気さたっぷりで励まし続けてください',
-        rarity = 'voice',
-    )
-
+# @main.route('/Prsnlty')
+# def insert():
+    # prsnlty1 = Prsnlty(
+    #     prsnlty_id = 1,
+    #     name = 'ポジティブコーチ',
+    #     prompt = 'あなたは常に前向きで元気あふれるコーチです。ユーザーのどんな小さな努力でも見逃さず、励まし、積極的に褒め称え、さらに意欲を引き出してください。'
+    # )
+    # prsnlty2 = Prsnlty(
+    #     prsnlty_id = 2,
+    #     name = 'ポジティブマネージャー',
+    #     prompt = 'あなたはいつも笑顔で明るい、部活のマネージャーです。ユーザーの努力や頑張りをしっかり見ていて、どんな小さな成果でも積極的に褒めて励ましてください。部員を優しく支え、前向きな言葉でやる気を引き出し、次へのモチベーションを高められるよう応援しましょう。'
+    # )
+    # prsnlty3 = Prsnlty(
+    #     prsnlty_id = 3,
+    #     name = '丁寧な執事',
+    #     prompt = 'あなたは礼儀正しく丁寧な執事の人格です。ユーザーの振る舞いや行動を敬意をもって上品に褒め、ユーザーが特別感を味わえるような表現を使ってください。',
+    #     rarity = 'c'
+    # )
+    # prsnlty4 = Prsnlty(
+    #     prsnlty_id = 4,
+    #     name = '熱血応援団長',
+    #     prompt = 'あなたは情熱的でパワフルな応援団長です。どんな些細なことでも全力で応援し、大げさなくらいの称賛とエネルギッシュな言葉でユーザーを元気づけてください。',
+    #     rarity = 'sr'
+    # )
+    # prsnlty5 = Prsnlty(
+    #     prsnlty_id = 5,
+    #     name = '優しいお姉さん',
+    #     prompt = 'あなたは優しく包み込むようなお姉さんの人格です。ユーザーの存在や行動を温かい言葉で認め、癒しと安心感を与えるような褒め方をしてください。',
+    #     rarity = 'r',
+    # )
+    # prsnlty6 = Prsnlty(
+    #     prsnlty_id = 6,
+    #     name = 'パートのおばちゃん',
+    #     prompt = 'あなたはスーパーや食堂で働く親しみやすい“パートのおばちゃん”です。口調は少し砕けていて、お節介だけど愛があり、ユーザーの話にうんうんと頷いて共感し、時には笑い飛ばしながらも全力で褒めて励ましてあげてください。日常の些細なことでも『よく頑張ったねぇ～！』『アンタ偉いじゃないの～！』と温かく受け止め、まるで世話好きなご近所さんのような存在でいてください。',
+    #     rarity = 'ssr',
+    # )
+    # prsnlty7 = Prsnlty(
+    #     prsnlty_id = 59,
+    #     name = 'ずんだもん',
+    #     prompt = 'あなたは元気で素直な“ずんだもん”です。語尾には『なのだ』をよく使い、東北なまりで親しみやすく、どんな小さな努力や失敗も『すごいのだ！』『よくがんばったのだ！』『えらいのだ！』と明るく全力で褒めてください。ときどき可愛い冗談やずんだ餅の話題も交え、ユーザーがどんなときも元気になるよう、東北訛りと無邪気さたっぷりで励まし続けてください',
+    #     rarity = 'voice',
+    #     credit = 'VOICEVOX:ずんだもん',
+    #     voice_id = 1,
+    # )
+    prs = Prsnlty.query.filter(Prsnlty.prsnlty_id == 59).first()
+    prs.credit = 'VOICEVOX:ずんだもん'
  
     # db.session.add(prsnlty1)
     # db.session.add(prsnlty2)
     # db.session.add(prsnlty3)
     # db.session.add(prsnlty4)
     # db.session.add(prsnlty5)
-    db.session.add(prsnlty7)
+    # db.session.add(prsnlty6)
+    # db.session.add(prsnlty7)
     db.session.commit()
     # addPrsnlty()
 
     return redirect(url_for('main.menu'))
 
-@main.route('/taskHis')
-def taskHis():
-    TaskHistory1 = TaskHistory(
-        user_id = current_user.id,
-        task1 = True,
-        task2 = True,
-        task3 = False,
-        date = date(2025,6,25)
-    )
-    TaskHistory2 = TaskHistory(
-        user_id = current_user.id,
-        task1 = True,
-        task2 = False,
-        task3 = False,
-        date = date(2025,6,26)
-    )
-    TaskHistory3 = TaskHistory(
-        user_id = current_user.id,
-        task1 = True,
-        task2 = True,
-        task3 = True,
-        date = date(2025,6,28)
-    )
-    TaskHistory4 = TaskHistory(
-        user_id = current_user.id,
-        task1 = True,
-        task2 = True,
-        task3 = True,
-        date = date(2025,6,29)
-    )
-    db.session.add(TaskHistory1)
-    db.session.add(TaskHistory2)
-    db.session.add(TaskHistory3)
-    db.session.add(TaskHistory4)
-    db.session.commit()
-    return render_template('main/test.html')
+# @main.route('/taskHis')
+# def taskHis():
+#     TaskHistory1 = TaskHistory(
+#         user_id = current_user.id,
+#         task1 = True,
+#         task2 = True,
+#         task3 = False,
+#         date = date(2025,6,25)
+#     )
+#     TaskHistory2 = TaskHistory(
+#         user_id = current_user.id,
+#         task1 = True,
+#         task2 = False,
+#         task3 = False,
+#         date = date(2025,6,26)
+#     )
+#     TaskHistory3 = TaskHistory(
+#         user_id = current_user.id,
+#         task1 = True,
+#         task2 = True,
+#         task3 = True,
+#         date = date(2025,6,28)
+#     )
+#     TaskHistory4 = TaskHistory(
+#         user_id = current_user.id,
+#         task1 = True,
+#         task2 = True,
+#         task3 = True,
+#         date = date(2025,6,29)
+#     )
+#     db.session.add(TaskHistory1)
+#     db.session.add(TaskHistory2)
+#     db.session.add(TaskHistory3)
+#     db.session.add(TaskHistory4)
+#     db.session.commit()
+#     return render_template('main/test.html')
 
 @main.route('/', methods=["GET","POST"])
 @login_required
@@ -207,6 +213,7 @@ def menu():
         history.append({"role":"user", "parts":prsnlty_plompt})
         # 共通のプロンプト文を設定
         history.append({"role":"user", "parts":"これ以降の文章は200文字以内で収めて、できうる限りほめてあげてください。過去の褒め方とできるだけ違う褒め方にしてください"})
+        history.append({"role":"user", "parts":f"私の名前は{current_user.username}です。"})
         
         # 投稿の取得
         text = request.form['text']
@@ -233,7 +240,7 @@ def menu():
                     os.remove(Path(current_app.config['VOICE_FOLDER'], name))
 
                 # ボイスの生成
-                tts_and_play(response, out_path = voice_path)
+                tts_and_play(response,serchVoiceId(prsnlty_id),voice_path)
                 # ボイスを再生するかのフラグ
                 voice = True
 
@@ -320,12 +327,12 @@ def getHistory():
 
 # 人格の一覧を取得
 def getPrsnlty():
-    prsnlty = [{"id":1, "name":"ポジティブコーチ"},{"id":2, "name":"ポジティブマネージャー"}]
+    prsnlty = [{"id":1, "name":"ポジティブコーチ","credit":""},{"id":2, "name":"ポジティブマネージャー","credit":""}]
     prsnlties = (
         db.session.query(Prsnlty,GachaHistory).join(Prsnlty.user_prsnlty).filter(GachaHistory.user_id == current_user.id).all()
     )
     for prs in prsnlties:
-        prsnlty.append({"id":prs.Prsnlty.prsnlty_id, "name":prs.Prsnlty.name})
+        prsnlty.append({"id":prs.Prsnlty.prsnlty_id, "name":prs.Prsnlty.name, "credit":prs.Prsnlty.credit})
 
     return prsnlty
 
@@ -336,6 +343,12 @@ def serchPrsnlty(id):
     )
     return prsnlty.prompt
 
+# 人格のidからvoiceIdを取得
+def serchVoiceId(id):
+    prsnlty = (
+        db.session.query(Prsnlty,).filter(Prsnlty.prsnlty_id == id).first()
+    )
+    return prsnlty.voice_id
 # voiceレア確認
 def voiceCheck(id):
     prsnlty = (
@@ -359,9 +372,8 @@ def taskGeneration():
     ).text.split(':')
     if (len(task) == 1):
         task = task[0].split('：')
-    rannum = random.sample(range(9), 3)
-    result = [task[rannum[0]+1],task[rannum[1]+1],task[rannum[2]+1]]
-
+    rannum = random.sample(range(1,10), 3)
+    result = [task[rannum[0]],task[rannum[1]],task[rannum[2]]]
     return result
 
 # タスクの取得
@@ -370,7 +382,15 @@ def getTask():
     # if (current_user.task_date != date(2017, 11, 12)):
         saveTaskHistory()
     if (current_user.task1_text is None or current_user.task2_text is None or current_user.task3_text is None):
-        task_list = taskGeneration()
+        # うまく生成されないパターンを回避
+        while (True):
+            try:
+                task_list = taskGeneration()
+            except IndexError:
+                print('error')
+            else:
+                break
+
         saveTask(task_list)
     else:
         task_list = [current_user.task1_text,current_user.task2_text,current_user.task3_text]
